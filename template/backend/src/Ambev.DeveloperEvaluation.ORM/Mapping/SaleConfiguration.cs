@@ -1,0 +1,37 @@
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Ambev.DeveloperEvaluation.ORM.Mapping
+{
+    public class SaleConfiguration : IEntityTypeConfiguration<Sale>
+    {
+        public void Configure(EntityTypeBuilder<Sale> builder)
+        {
+            builder.ToTable("Sales");
+
+            builder.HasKey(b => b.Id);
+            builder.Property(b => b.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");
+
+            builder.Property(b => b.SaleNumber).IsRequired().HasMaxLength(50);
+            builder.Property(b => b.SaleDate).IsRequired();
+            builder.Property(b => b.TotalAmount).IsRequired();
+            builder.Property(b => b.IsCancelled).IsRequired();
+            builder.Property(b => b.CustomerId).IsRequired();
+            builder.Property(b => b.BranchId).IsRequired();
+
+            // FK Statements
+            builder.HasMany(b => b.SaleItems)
+                .WithOne()
+                .HasForeignKey(b => b.SaleId);
+
+            builder.HasOne(b => b.Customer)
+                .WithMany()
+                .HasForeignKey(b => b.CustomerId);
+
+            builder.HasOne(b => b.Branch)
+                .WithMany()
+                .HasForeignKey(b => b.BranchId);
+        }
+    }
+}
