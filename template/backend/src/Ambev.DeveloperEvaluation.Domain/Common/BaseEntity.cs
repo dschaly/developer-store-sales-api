@@ -4,6 +4,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Common;
 
 public class BaseEntity : IComparable<BaseEntity>
 {
+    /// <summary>
+    /// Gets the unique identifier.
+    /// </summary>
     public Guid Id { get; set; }
 
     public Task<IEnumerable<ValidationErrorDetail>> ValidateAsync()
@@ -13,7 +16,7 @@ public class BaseEntity : IComparable<BaseEntity>
 
     public int CompareTo(BaseEntity? other)
     {
-        if (other == null)
+        if (other is null)
         {
             return 1;
         }
