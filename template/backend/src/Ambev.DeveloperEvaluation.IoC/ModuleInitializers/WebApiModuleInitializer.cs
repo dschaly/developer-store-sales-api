@@ -7,9 +7,9 @@ namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers
     {
         public void Initialize(WebApplicationBuilder builder)
         {
-
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
+            builder.Services.AddHttpContextAccessor();
         }
     }
 }
