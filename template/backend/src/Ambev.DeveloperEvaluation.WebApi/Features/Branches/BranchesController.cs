@@ -8,6 +8,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Branches.DeleteBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.UpdateBranch;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +50,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<CreateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
@@ -77,7 +78,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<UpdateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
@@ -107,7 +108,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<GetBranchCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
@@ -137,7 +138,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<DeleteBranchCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);

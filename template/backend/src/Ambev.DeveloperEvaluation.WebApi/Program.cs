@@ -68,6 +68,8 @@ public static class Program
 
             app.UseBasicHealthChecks();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             app.MapControllers();
 
             app.Run();
