@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -13,16 +14,18 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
     /// <summary>
     /// Initializes a new instance of CreateProductHandler
     /// </summary>
     /// <param name="productRepository">The product repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
+    public CreateProductHandler(IProductRepository productRepository, IMapper mapper, IUser user)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -45,6 +48,8 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
             throw new InvalidOperationException($"Product with e-mail {command.Name} already exists");
 
         var product = _mapper.Map<Product>(command);
+
+        product.CreatedBy = _user.Username;
 
         var createdProduct = await _productRepository.CreateAsync(product, cancellationToken);
         var result = _mapper.Map<CreateProductResult>(createdProduct);

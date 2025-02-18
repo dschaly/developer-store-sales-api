@@ -32,9 +32,17 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .IsRequired()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'");
 
+            builder.Property(b => b.CreatedBy)
+                .IsRequired()
+                .HasMaxLength(100);
+
             builder.Property(b => b.UpdatedAt)
                 .IsRequired(false)
                 .HasDefaultValueSql("NULL");
+
+            builder.Property(b => b.UpdatedBy)
+                .IsRequired(false)
+                .HasMaxLength(100);
         }
     }
 }
