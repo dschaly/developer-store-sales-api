@@ -5,7 +5,7 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Customers.DeleteCustomer;
 
 /// <summary>
-/// Handler for processing DeleteBranchCommand requests
+/// Handler for processing DeleteCustomerCommand requests
 /// </summary>
 public class DeleteCustomerHandler : IRequestHandler<DeleteCustomerCommand, DeleteCustomerResponse>
 {

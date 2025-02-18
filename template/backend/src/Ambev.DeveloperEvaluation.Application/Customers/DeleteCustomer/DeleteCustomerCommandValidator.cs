@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Application.Customers.DeleteCustomer;
 public class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
 {
     /// <summary>
-    /// Initializes validation rules for DeleteBranchCommand
+    /// Initializes validation rules for DeleteCustomerCommand
     /// </summary>
     public DeleteCustomerCommandValidator()
     {

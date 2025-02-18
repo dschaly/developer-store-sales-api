@@ -17,7 +17,7 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Crea
     /// <summary>
     /// Initializes a new instance of CreateCustomerHandler
     /// </summary>
-    /// <param name="customerRepository">The branch repository</param>
+    /// <param name="customerRepository">The customer repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     public CreateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper)
     {
