@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -13,16 +14,18 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
 {
     private readonly IBranchRepository _branchRepository;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
     /// <summary>
     /// Initializes a new instance of CreateBranchHandler
     /// </summary>
     /// <param name="branchRepository">The branch repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper)
+    public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IUser user)
     {
         _branchRepository = branchRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -44,6 +47,8 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
             throw new InvalidOperationException($"Branch with name {command.Name} already exists");
 
         var branch = _mapper.Map<Branch>(command);
+
+        branch.CreatedBy = _user.Username;
 
         var createdBranch = await _branchRepository.CreateAsync(branch, cancellationToken);
         var result = _mapper.Map<CreateBranchResult>(createdBranch);
