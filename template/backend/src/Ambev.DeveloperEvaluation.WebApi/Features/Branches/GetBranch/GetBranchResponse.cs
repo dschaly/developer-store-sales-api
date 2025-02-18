@@ -1,15 +1,12 @@
+using Ambev.DeveloperEvaluation.WebApi.Common;
+
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
 
 /// <summary>
 /// API response model for GetBranch operation
 /// </summary>
-public class GetBranchResponse
+public class GetBranchResponse : BaseResponse
 {
-    /// <summary>
-    /// The unique identifier of the branch
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The branch's name
     /// </summary>

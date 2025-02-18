@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
     {
         public SaleRepository(DefaultContext context) : base(context)
         {
-            
+
         }
     }
 }

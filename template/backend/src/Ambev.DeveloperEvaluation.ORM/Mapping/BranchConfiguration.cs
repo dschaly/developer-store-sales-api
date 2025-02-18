@@ -15,6 +15,14 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
             builder.Property(b => b.Name).IsRequired().HasMaxLength(50);
             builder.Property(b => b.Address).IsRequired().HasMaxLength(100);
+
+            builder.Property(b => b.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'");
+
+            builder.Property(b => b.UpdatedAt)
+                .IsRequired(false)
+                .HasDefaultValueSql("NULL");
         }
     }
 }
