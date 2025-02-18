@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Customers.CreateCustomer;
 
 /// <summary>
-/// Validator for CreateCustomerRequest that defines validation rules for branch creation.
+/// Validator for CreateCustomerRequest that defines validation rules for customer creation.
 /// </summary>
 public class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
 {

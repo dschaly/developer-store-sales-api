@@ -13,8 +13,8 @@ public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRe
     /// </summary>
     /// <remarks>
     /// Validation rules include:
-    /// - Name: Must be null or empty, length between 3 and 50 characters
-    /// - Email: Must be valid format (using EmailValidator)
+    /// - Name: Must not be null or empty, length between 3 and 50 characters
+    /// - Email: Must not be valid format (using EmailValidator)
     /// </remarks>
     public UpdateCustomerRequestValidator()
     {
