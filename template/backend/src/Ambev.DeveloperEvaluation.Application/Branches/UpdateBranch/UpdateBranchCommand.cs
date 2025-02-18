@@ -1,7 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
+using Ambev.DeveloperEvaluation.Common.Validation;
+using FluentValidation;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
 
 /// <summary>
 /// Command for creating a new branch.
@@ -17,8 +19,13 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 /// <see cref="AbstractValidator{T}"/> to ensure that the fields are correctly 
 /// populated and follow the required rules.
 /// </remarks>
-public class CreateBranchCommand : IRequest<CreateBranchResult>
+public class UpdateBranchCommand : IRequest<UpdateBranchResult>
 {
+    /// <summary>
+    /// The unique identifier of the branch
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Gets or sets the name of the branch.
     /// </summary>
@@ -30,7 +37,7 @@ public class CreateBranchCommand : IRequest<CreateBranchResult>
     public string Address { get; set; } = string.Empty;
     public ValidationResultDetail Validate()
     {
-        var validator = new CreateBranchCommandValidator();
+        var validator = new UpdateBranchCommandValidator();
         var result = validator.Validate(this);
         return new ValidationResultDetail
         {

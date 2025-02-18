@@ -1,11 +1,14 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 using Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
+using Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.DeleteBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
+using Ambev.DeveloperEvaluation.WebApi.Features.Branches.UpdateBranch;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +40,7 @@ public class BranchesController : BaseController
     /// </summary>
     /// <param name="request">The branch creation request</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created branch details</returns>
+    /// <returns>The created branch Id</returns>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateBranchResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -47,7 +50,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<CreateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
@@ -57,6 +60,34 @@ public class BranchesController : BaseController
             Success = true,
             Message = "Branch created successfully",
             Data = _mapper.Map<CreateBranchResponse>(response)
+        });
+    }
+
+    /// <summary>
+    /// Updates a new branch
+    /// </summary>
+    /// <param name="request">The branch update request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated branch Id</returns>
+    [HttpPut]
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateBranchResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateBranch([FromBody] UpdateBranchRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new UpdateBranchRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+        var command = _mapper.Map<UpdateBranchCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponseWithData<UpdateBranchResponse>
+        {
+            Success = true,
+            Message = "Branch updated successfully",
+            Data = _mapper.Map<UpdateBranchResponse>(response)
         });
     }
 
@@ -77,7 +108,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<GetBranchCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
@@ -107,7 +138,7 @@ public class BranchesController : BaseController
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<DeleteBranchCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);

@@ -13,11 +13,11 @@ public class CreateBranchRequestValidator : AbstractValidator<CreateBranchReques
     /// <remarks>
     /// Validation rules include:
     /// - Name: Required, length between 3 and 50 characters
-    /// - Address: Required, length between 3 and 50 characters
+    /// - Address: Required, length between 3 and 100 characters
     /// </remarks>
     public CreateBranchRequestValidator()
     {
         RuleFor(user => user.Name).NotEmpty().Length(3, 50);
-        RuleFor(user => user.Address).NotEmpty().Length(3, 50);
+        RuleFor(user => user.Address).NotEmpty().Length(3, 100);
     }
 }

@@ -30,6 +30,24 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     }
 
     /// <summary>
+    /// Updates a new entity in the database
+    /// </summary>
+    /// <param name="entity">The entity to update</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated entity</returns>
+    public async Task<T?> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    {
+        var existingEntity = await GetByIdAsync(entity.Id, cancellationToken)
+            ?? throw new InvalidOperationException($"Entity with id {entity.Id} not found");
+
+        _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return existingEntity;
+    }
+
+    /// <summary>
     /// Retrieves an entity by their unique identifier
     /// </summary>
     /// <param name="id">The unique identifier of the entity</param>

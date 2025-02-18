@@ -15,7 +15,7 @@ public class CreateBranchCommandValidator : AbstractValidator<CreateBranchComman
     /// - Name: Must be null or empty
     /// - Address: Must be null or empty
     /// </remarks>
-    public CreateBranchCommandValidator() 
+    public CreateBranchCommandValidator()
     {
         RuleFor(o => o.Name).NotEmpty();
         RuleFor(o => o.Address).NotEmpty();

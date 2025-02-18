@@ -1,15 +1,12 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+
+namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 
 /// <summary>
 /// Response model for GetBranch operation
 /// </summary>
-public class GetBranchResult
+public class GetBranchResult : BaseResult
 {
-    /// <summary>
-    /// The unique identifier of the branch
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The branch's full name
     /// </summary>
