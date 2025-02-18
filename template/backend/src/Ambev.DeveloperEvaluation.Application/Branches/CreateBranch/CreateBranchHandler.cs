@@ -30,7 +30,7 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
     /// </summary>
     /// <param name="command">The CreateBranchCommand command</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created branch details</returns>
+    /// <returns>The created Branch Id</returns>
     public async Task<CreateBranchResult> Handle(CreateBranchCommand command, CancellationToken cancellationToken)
     {
         var validator = new CreateBranchCommandValidator();

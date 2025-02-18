@@ -12,12 +12,12 @@ public class CreateBranchCommandValidator : AbstractValidator<CreateBranchComman
     /// </summary>
     /// <remarks>
     /// Validation rules include:
-    /// - Name: Must be null or empty
-    /// - Address: Must be null or empty
+    /// - Name: Must not be null or empty
+    /// - Address: Must not be null or empty
     /// </remarks>
     public CreateBranchCommandValidator()
     {
-        RuleFor(o => o.Name).NotEmpty();
-        RuleFor(o => o.Address).NotEmpty();
+        RuleFor(o => o.Name).NotEmpty().Length(3, 50);
+        RuleFor(o => o.Address).NotEmpty().Length(3, 100);
     }
 }

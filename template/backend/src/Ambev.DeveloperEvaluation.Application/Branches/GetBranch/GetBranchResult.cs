@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 public class GetBranchResult : BaseResult
 {
     /// <summary>
-    /// The branch's full name
+    /// The branch's name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
