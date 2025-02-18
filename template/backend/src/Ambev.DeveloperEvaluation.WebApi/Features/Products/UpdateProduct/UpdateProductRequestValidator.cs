@@ -3,7 +3,7 @@
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 
 /// <summary>
-/// Validator for CreateProductRequest that defines validation rules for branch updating.
+/// Validator for CreateProductRequest that defines validation rules for product updating.
 /// </summary>
 public class UpdateProductRequestValidator : AbstractValidator<UpdateProductRequest>
 {

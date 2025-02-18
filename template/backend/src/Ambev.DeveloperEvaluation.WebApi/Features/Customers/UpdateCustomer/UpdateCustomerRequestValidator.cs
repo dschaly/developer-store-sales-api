@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Customers.UpdateCustomer;
 
 /// <summary>
-/// Validator for CreateCustomerRequest that defines validation rules for branch updating.
+/// Validator for CreateCustomerRequest that defines validation rules for customer updating.
 /// </summary>
 public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRequest>
 {

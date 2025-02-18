@@ -20,10 +20,6 @@
     <Folder Include="SaleItems\DeleteSaleItem\" />
     <Folder Include="SaleItems\GetSaleItem\" />
     <Folder Include="SaleItems\UpdateSaleItem\" />
-    <Folder Include="Sales\GetSale\" />
-    <Folder Include="Sales\DeleteSale\" />
-    <Folder Include="Sales\CreateSale\" />
-    <Folder Include="Sales\UpdateSale\" />
   </ItemGroup>
 
 </Project>

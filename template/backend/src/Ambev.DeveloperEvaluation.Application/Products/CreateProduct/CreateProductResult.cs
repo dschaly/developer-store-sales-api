@@ -4,7 +4,7 @@
 /// Represents the response returned after successfully creating a new Product.
 /// </summary>
 /// <remarks>
-/// This response contains the unique identifier of the newly created user,
+/// This response contains the unique identifier of the newly created Product,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
 public class CreateProductResult

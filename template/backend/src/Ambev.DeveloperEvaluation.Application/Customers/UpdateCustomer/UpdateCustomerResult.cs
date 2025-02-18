@@ -4,7 +4,7 @@
 /// Represents the response returned after successfully updating a new customer.
 /// </summary>
 /// <remarks>
-/// This response contains the unique identifier of the recently updated user,
+/// This response contains the unique identifier of the recently updated customer,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
 public class UpdateCustomerResult
