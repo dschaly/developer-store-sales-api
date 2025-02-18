@@ -27,6 +27,14 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
             builder.HasOne(b => b.Product)
                 .WithMany()
                 .HasForeignKey(b => b.ProductId);
+
+            builder.Property(b => b.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'");
+
+            builder.Property(b => b.UpdatedAt)
+                .IsRequired(false)
+                .HasDefaultValueSql("NULL");
         }
     }
 }
