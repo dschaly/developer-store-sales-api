@@ -1,6 +1,19 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches.UpdateBranch
+﻿using Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
+using AutoMapper;
+
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches.UpdateBranch;
+
+/// <summary>
+/// Profile for mapping between Application and API UpdateBranch responses
+/// </summary>
+public class UpdateBranchProfile : Profile
 {
-    public class UpdateBranchProfile
+    /// <summary>
+    /// Initializes the mappings for UpdateBranch feature
+    /// </summary>
+    public UpdateBranchProfile()
     {
+        CreateMap<UpdateBranchRequest, UpdateBranchCommand>();
+        CreateMap<UpdateBranchResult, UpdateBranchResponse>();
     }
 }

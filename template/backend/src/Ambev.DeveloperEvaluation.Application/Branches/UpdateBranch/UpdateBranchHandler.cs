@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -34,10 +33,14 @@ public class UpdateBranchHandler : IRequestHandler<UpdateBranchCommand, UpdateBr
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var branch = _mapper.Map<Branch>(command);
-        branch.UpdatedAt = DateTime.UtcNow;
+        var entity = await _branchRepository.GetByIdAsync(command.Id, cancellationToken)
+            ?? throw new InvalidOperationException($"Entity with id {command.Id} not found");
 
-        var updatedBranch = await _branchRepository.UpdateAsync(branch, cancellationToken);
+        _mapper.Map(command, entity);
+
+        entity.UpdatedAt = DateTime.UtcNow;
+
+        var updatedBranch = await _branchRepository.UpdateAsync(entity, cancellationToken);
 
         var result = _mapper.Map<UpdateBranchResult>(updatedBranch);
 

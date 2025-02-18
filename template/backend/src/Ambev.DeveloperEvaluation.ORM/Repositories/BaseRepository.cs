@@ -37,16 +37,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     /// <returns>The updated entity</returns>
     public async Task<T?> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        var existingEntity = await GetByIdAsync(entity.Id, cancellationToken);
-
-        if (existingEntity is null)
-            throw new InvalidOperationException($"Entity with id {entity.Id} not found");
+        var existingEntity = await GetByIdAsync(entity.Id, cancellationToken)
+            ?? throw new InvalidOperationException($"Entity with id {entity.Id} not found");
 
         _context.Entry(existingEntity).CurrentValues.SetValues(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return existingEntity; 
+        return existingEntity;
     }
 
     /// <summary>

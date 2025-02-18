@@ -22,6 +22,11 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
 public class UpdateBranchCommand : IRequest<UpdateBranchResult>
 {
     /// <summary>
+    /// The unique identifier of the branch
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
     /// Gets or sets the name of the branch.
     /// </summary>
     public string Name { get; set; } = string.Empty;

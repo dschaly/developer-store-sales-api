@@ -10,7 +10,8 @@ public class UpdateBranchProfile : Profile
 {
     public UpdateBranchProfile()
     {
-        CreateMap<UpdateBranchCommand, Branch>();
+        CreateMap<UpdateBranchCommand, Branch>()
+            .ForMember(o => o.CreatedAt, opt => opt.Ignore());
         CreateMap<Branch, UpdateBranchResult>();
     }
 }

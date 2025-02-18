@@ -17,6 +17,7 @@ public class UpdateBranchCommandValidator : AbstractValidator<UpdateBranchComman
     /// </remarks>
     public UpdateBranchCommandValidator()
     {
+        RuleFor(o => o.Id).NotEmpty();
         RuleFor(o => o.Name).NotEmpty().Length(3, 50);
         RuleFor(o => o.Address).NotEmpty().Length(3, 100);
     }
