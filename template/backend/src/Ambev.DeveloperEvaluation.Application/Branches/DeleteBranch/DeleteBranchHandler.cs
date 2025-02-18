@@ -28,7 +28,7 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
     /// <returns>The result of the delete operation</returns>
     public async Task<DeleteBranchResponse> Handle(DeleteBranchCommand request, CancellationToken cancellationToken)
     {
-        var validator = new DeleteBranchValidator();
+        var validator = new DeleteBranchCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
