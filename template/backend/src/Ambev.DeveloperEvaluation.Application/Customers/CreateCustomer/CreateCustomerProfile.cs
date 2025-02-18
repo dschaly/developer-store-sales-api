@@ -4,7 +4,7 @@ using AutoMapper;
 namespace Ambev.DeveloperEvaluation.Application.Customers.CreateCustomer;
 
 /// <summary>
-/// Profile for mapping between Branch entity and CreateBranchResponse
+/// Profile for mapping between Customer entity, CreateCustomerCommand, and CreateCustomerResult
 /// </summary>
 public class CreateCustomerProfile : Profile
 {
