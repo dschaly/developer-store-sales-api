@@ -6,8 +6,10 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
+using Ambev.DeveloperEvaluation.WebApi.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -27,7 +29,8 @@ public static class Program
             builder.Services.AddEndpointsApiExplorer();
 
             builder.AddBasicHealthChecks();
-            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSwaggerConfiguration();
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(
@@ -39,6 +42,8 @@ public static class Program
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
             builder.RegisterDependencies();
+
+            builder.Services.AddScoped<IUser, UserService>();
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
 
@@ -82,5 +87,39 @@ public static class Program
         {
             Log.CloseAndFlush();
         }
+    }
+
+    public static void AddSwaggerConfiguration(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Developer Store Sales API", Version = "v1" });
+
+            // Add JWT Authentication to Swagger
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter 'Bearer' followed by your JWT token (e.g., Bearer your-token)"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+        });
     }
 }
