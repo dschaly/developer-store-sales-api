@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -12,11 +13,13 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 {
     private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
-    public UpdateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper)
+    public UpdateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper, IUser user)
     {
         _customerRepository = customerRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -38,6 +41,7 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 
         _mapper.Map(command, entity);
 
+        entity.UpdatedBy = _user.Username;
         entity.UpdatedAt = DateTime.UtcNow;
 
         var updatedCustomer = await _customerRepository.UpdateAsync(entity, cancellationToken);

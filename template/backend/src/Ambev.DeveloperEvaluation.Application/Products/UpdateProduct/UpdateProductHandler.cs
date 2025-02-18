@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -12,11 +13,12 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
-
-    public UpdateProductHandler(IProductRepository productRepository, IMapper mapper)
+    private readonly IUser _user;
+    public UpdateProductHandler(IProductRepository productRepository, IMapper mapper, IUser user)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -38,6 +40,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
 
         _mapper.Map(command, entity);
 
+        entity.UpdatedBy = _user.Username;
         entity.UpdatedAt = DateTime.UtcNow;
 
         var updatedProduct = await _productRepository.UpdateAsync(entity, cancellationToken);

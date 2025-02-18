@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -12,11 +13,13 @@ public class UpdateBranchHandler : IRequestHandler<UpdateBranchCommand, UpdateBr
 {
     private readonly IBranchRepository _branchRepository;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
-    public UpdateBranchHandler(IBranchRepository branchRepository, IMapper mapper)
+    public UpdateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IUser user)
     {
         _branchRepository = branchRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -39,6 +42,7 @@ public class UpdateBranchHandler : IRequestHandler<UpdateBranchCommand, UpdateBr
         _mapper.Map(command, entity);
 
         entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = _user.Username;
 
         var updatedBranch = await _branchRepository.UpdateAsync(entity, cancellationToken);
 

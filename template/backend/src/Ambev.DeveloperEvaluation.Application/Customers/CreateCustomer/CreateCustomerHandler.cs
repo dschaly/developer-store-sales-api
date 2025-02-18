@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -13,16 +14,18 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Crea
 {
     private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
     /// <summary>
     /// Initializes a new instance of CreateCustomerHandler
     /// </summary>
     /// <param name="customerRepository">The customer repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public CreateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper)
+    public CreateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper, IUser user)
     {
         _customerRepository = customerRepository;
         _mapper = mapper;
+        _user = user;
     }
 
     /// <summary>
@@ -45,6 +48,8 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Crea
             throw new InvalidOperationException($"Customer with e-mail {command.Email} already exists");
 
         var customer = _mapper.Map<Customer>(command);
+
+        customer.CreatedBy = _user.Username;
 
         var createdCustomer = await _customerRepository.CreateAsync(customer, cancellationToken);
         var result = _mapper.Map<CreateCustomerResult>(createdCustomer);
