@@ -1,7 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 
@@ -24,10 +27,28 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var product = await _productRepository.GetByIdAsync(command.Id, cancellationToken)
-            ?? throw new InvalidOperationException($"Product with ID {command.Id} not found");
+        int page = command.Page ?? 1;
+        int size = command.Size ?? 10;
 
-        var result = _mapper.Map<GetProductResult>(product);
+        var query = await _productRepository.Query(cancellationToken);
+
+        if (!string.IsNullOrWhiteSpace(command.Order))
+        {
+            query = OrderingUtil<Product>.ApplyOrdering(query, command.Order);
+        }
+
+        int totalCount = await query.CountAsync(cancellationToken);
+
+        var products = query.Skip((page - 1) * size).Take(size);
+
+        var result = new GetProductResult
+        {
+            Data = _mapper.Map<IEnumerable<ProductResult>>(products),
+            TotalCount = totalCount,
+            CurrentPage = page,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)size)
+        };
+
         return result;
     }
 }

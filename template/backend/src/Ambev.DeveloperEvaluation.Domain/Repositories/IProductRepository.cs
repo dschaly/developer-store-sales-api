@@ -14,4 +14,11 @@ public interface IProductRepository : IBaseRepository<Product>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product if found, null otherwise</returns>
     Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a list if product
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The products list if found, null otherwise</returns>
+    Task<IQueryable<Product>?> Query(CancellationToken cancellationToken = default);
 }

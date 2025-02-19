@@ -3,20 +3,22 @@
 namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 
 /// <summary>
-/// Command for retrieving a product by their ID
+/// Command for retrieving a list of all product 
 /// </summary>
 public class GetProductCommand : IRequest<GetProductResult>
 {
     /// <summary>
     /// The unique identifier of the Product to retrieve
     /// </summary>
-    public Guid Id { get; }
+    public int? Page { get; set; }
+
     /// <summary>
-    /// Initializes a new instance of GetProductCommand
+    /// The unique identifier of the Product to retrieve
     /// </summary>
-    /// <param name="id">The ID of the Product to retrieve</param>
-    public GetProductCommand(Guid id)
-    {
-        Id = id;
-    }
+    public int? Size { get; set; }
+
+    /// <summary>
+    /// The unique identifier of the Product to retrieve
+    /// </summary>
+    public string? Order { get; set; }
 }

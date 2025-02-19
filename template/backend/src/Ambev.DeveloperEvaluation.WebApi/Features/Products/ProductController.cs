@@ -94,30 +94,43 @@ public class ProductsController : BaseController
     /// <summary>
     /// Retrieves a product by their ID
     /// </summary>
-    /// <param name="id">The unique identifier of the product</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product details if found</returns>
-    [HttpGet("{id}")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProduct([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProduct(
+        [FromQuery] int? _page,
+        [FromQuery] int? _size,
+        [FromQuery] string? _order,
+
+        CancellationToken cancellationToken)
     {
-        var request = new GetProductRequest { Id = id };
+        var request = new GetProductRequest
+        {
+            Page = _page,
+            Size = _size,
+            Order = _order
+        };
+
         var validator = new GetProductRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var command = _mapper.Map<GetProductCommand>(request.Id);
+        var command = _mapper.Map<GetProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetProductResponse>
+        return Ok(new PaginatedResponse<ProductResponse>
         {
             Success = true,
             Message = "Product retrieved successfully",
-            Data = _mapper.Map<GetProductResponse>(response)
+            CurrentPage = response.CurrentPage,
+            TotalCount = response.TotalCount,
+            TotalPages = response.TotalPages,
+            Data = _mapper.Map<IEnumerable<ProductResponse>>(response.Data)
         });
     }
 

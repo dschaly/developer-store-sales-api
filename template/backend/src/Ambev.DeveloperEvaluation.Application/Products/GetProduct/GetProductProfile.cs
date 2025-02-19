@@ -10,6 +10,6 @@ public class GetProductProfile : Profile
 {
     public GetProductProfile()
     {
-        CreateMap<Product, GetProductResult>();
+        CreateMap<Product, ProductResult>();
     }
 }

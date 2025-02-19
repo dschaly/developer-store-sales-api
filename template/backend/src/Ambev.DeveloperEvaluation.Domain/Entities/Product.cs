@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
@@ -11,11 +12,31 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Gets the name of the product.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets the price of the product.
         /// </summary>
         public decimal Price { get; set; }
+
+        /// <summary>
+        /// Gets the description of the product.
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the category of the product.
+        /// </summary>
+        public string Category { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the image of the product.
+        /// </summary>
+        public string Image { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the rating of the product.
+        /// </summary>
+        public Rating? Rating { get; set; }
     }
 }

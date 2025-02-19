@@ -6,7 +6,17 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 public class GetProductRequest
 {
     /// <summary>
-    /// The unique identifier of the product to retrieve
+    /// The unique identifier of the Product to retrieve
     /// </summary>
-    public Guid Id { get; set; }
+    public int? Page { get; set; }
+
+    /// <summary>
+    /// The unique identifier of the Product to retrieve
+    /// </summary>
+    public int? Size { get; set; }
+
+    /// <summary>
+    /// The unique identifier of the Product to retrieve
+    /// </summary>
+    public string? Order { get; set; }
 }
