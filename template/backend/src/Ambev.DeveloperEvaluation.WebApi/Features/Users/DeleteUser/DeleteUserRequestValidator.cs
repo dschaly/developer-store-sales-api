@@ -10,10 +10,13 @@ public class DeleteUserRequestValidator : AbstractValidator<DeleteUserRequest>
     /// <summary>
     /// Initializes validation rules for DeleteUserRequest
     /// </summary>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public DeleteUserRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("User ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

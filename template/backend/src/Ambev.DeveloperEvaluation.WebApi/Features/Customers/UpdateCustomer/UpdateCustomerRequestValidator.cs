@@ -18,7 +18,11 @@ public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRe
     /// </remarks>
     public UpdateCustomerRequestValidator()
     {
-        RuleFor(o => o.Name).NotEmpty().Length(3, 50);
+        RuleFor(o => o.Name)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.")
+            .Length(3, 100)
+            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
         RuleFor(o => o.Email).NotEmpty().SetValidator(new EmailValidator());
     }
 }

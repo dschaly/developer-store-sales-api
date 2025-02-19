@@ -10,10 +10,14 @@ public class DeleteProductCommandValidator : AbstractValidator<DeleteProductComm
     /// <summary>
     /// Initializes validation rules for DeleteProductCommand
     /// </summary>
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public DeleteProductCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Product ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }
