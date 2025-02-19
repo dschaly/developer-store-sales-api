@@ -17,7 +17,7 @@ public class UpdateProductRequestValidator : AbstractValidator<UpdateProductRequ
     /// </remarks>
     public UpdateProductRequestValidator()
     {
-        RuleFor(o => o.Name).NotEmpty().Length(3, 50);
+        RuleFor(o => o.Title).NotEmpty().Length(3, 50);
         RuleFor(o => o.Price).NotEmpty().GreaterThan(0);
     }
 }

@@ -1,15 +1,17 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
-using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+using Ambev.DeveloperEvaluation.Application.Products.GetProductCategory;
+using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
-using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
@@ -18,7 +20,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 /// Controller for managing product operations
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
+
 public class ProductsController : BaseController
 {
     private readonly IMediator _mediator;
@@ -92,32 +96,35 @@ public class ProductsController : BaseController
     }
 
     /// <summary>
-    /// Retrieves a product by their ID
+    /// Retrieves a paginated product list
     /// </summary>
-    /// <param name="id">The unique identifier of the product</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The product details if found</returns>
-    [HttpGet("{id}")]
+    /// <returns>The paginated product list if found</returns>
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProduct([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProduct(
+        [FromQuery] GetProductRequest request,
+        CancellationToken cancellationToken)
     {
-        var request = new GetProductRequest { Id = id };
         var validator = new GetProductRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var command = _mapper.Map<GetProductCommand>(request.Id);
+        var command = _mapper.Map<GetProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetProductResponse>
+        return Ok(new PaginatedResponse<ProductResponse>
         {
             Success = true,
-            Message = "Product retrieved successfully",
-            Data = _mapper.Map<GetProductResponse>(response)
+            Message = "Products retrieved successfully",
+            CurrentPage = response.CurrentPage,
+            TotalCount = response.TotalCount,
+            TotalPages = response.TotalPages,
+            Data = _mapper.Map<IEnumerable<ProductResponse>>(response.Data)
         });
     }
 
@@ -147,6 +154,65 @@ public class ProductsController : BaseController
         {
             Success = true,
             Message = "Product deleted successfully"
+        });
+    }
+
+    /// <summary>
+    /// Retrieves all product registered categories
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The categories array</returns>
+    [HttpGet("categories")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProductCategories(CancellationToken cancellationToken)
+    {
+        var command = new GetProductCategoryCommand();
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponseWithData<string[]>
+        {
+            Data = response.Categories,
+            Success = true,
+            Message = "Categories retrieved successfully"
+        });
+    }
+
+    /// <summary>
+    /// Retrieves all product registered with the given categories
+    /// </summary>
+    /// <param name="request">Category Request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The products list</returns>
+    [HttpGet("categories/{category}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProductCategories([FromRoute] GetByCategoryRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new GetByCategoryRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+        var commandRequest = new GetProductRequest
+        {
+            Category = request.Category,
+        };
+
+        var command = _mapper.Map<GetProductCommand>(commandRequest);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new PaginatedResponse<ProductResponse>
+        {
+            Success = true,
+            Message = "Products retrieved successfully",
+            CurrentPage = response.CurrentPage,
+            TotalCount = response.TotalCount,
+            TotalPages = response.TotalPages,
+            Data = _mapper.Map<IEnumerable<ProductResponse>>(response.Data)
         });
     }
 }

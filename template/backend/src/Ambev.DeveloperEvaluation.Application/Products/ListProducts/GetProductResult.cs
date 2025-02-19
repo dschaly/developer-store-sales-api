@@ -1,16 +1,22 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Common;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 
 /// <summary>
-/// Represents the response returned after successfully creating a new Product.
+/// Response model for GetProduct operation
 /// </summary>
-/// <remarks>
-/// This response contains the unique identifier of the newly created user,
-/// which can be used for subsequent operations or reference.
-/// </remarks>
-public sealed class CreateProductResult : BaseResult
+public class GetProductResult
+{
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int TotalItems { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public IEnumerable<ProductResult>? Data { get; set; }
+}
+
+public class ProductResult : BaseResult
 {
     /// <summary>
     /// The Product's title

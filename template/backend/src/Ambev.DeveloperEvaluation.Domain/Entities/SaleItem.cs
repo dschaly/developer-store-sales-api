@@ -38,7 +38,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Gets the sale that this sale item belongs to.
         /// </summary>
-        public required Sale Sale { get; set; }
+        public virtual required Sale Sale { get; set; }
 
         /// <summary>
         /// Gets the foreign key for the associated product.
@@ -47,6 +47,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Gets the product that is sold in this sale item.
         /// </summary>
-        public required Product Product { get; set; }
+        public virtual required Product Product { get; set; }
     }
 }
