@@ -59,8 +59,8 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         if (!string.IsNullOrWhiteSpace(command.Title))
             query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Title"), $"%{command.Title}%"));
 
-        if (!string.IsNullOrWhiteSpace(command.Title))
-            query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Title"), $"%{command.Title}%"));
+        if (!string.IsNullOrWhiteSpace(command.Category))
+            query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Category"), $"%{command.Category}%"));
 
         return query;
     }

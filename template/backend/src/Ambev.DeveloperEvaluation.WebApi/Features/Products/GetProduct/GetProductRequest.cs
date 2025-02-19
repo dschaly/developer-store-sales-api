@@ -1,7 +1,7 @@
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 
 /// <summary>
-/// Request model for getting a product by ID
+/// Request model for getting a product list
 /// </summary>
 public class GetProductRequest
 {
