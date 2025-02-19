@@ -53,7 +53,7 @@ public class ExceptionHandlingMiddleware
         }
         else
         {
-            errorResponse.Message = exception.Message;
+            errorResponse.Message = exception.GetBaseException().Message;
         }
 
         var jsonErrorResponse = JsonSerializer.Serialize(errorResponse, _jsonOptions);

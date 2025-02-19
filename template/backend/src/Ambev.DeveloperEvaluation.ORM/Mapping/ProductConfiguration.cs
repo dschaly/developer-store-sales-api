@@ -13,8 +13,17 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");
 
-            builder.Property(b => b.Name).IsRequired().HasMaxLength(50);
+            builder.Property(b => b.Title).IsRequired().HasMaxLength(50);
             builder.Property(b => b.Price).IsRequired();
+            builder.Property(p => p.Description).HasMaxLength(500);
+            builder.Property(p => p.Category).HasMaxLength(50);
+            builder.Property(p => p.Image).HasMaxLength(255);
+
+            builder.OwnsOne(p => p.Rating, rating =>
+            {
+                rating.Property(r => r.Rate).HasColumnName("Rate").HasPrecision(2, 1);
+                rating.Property(r => r.Count).HasColumnName("RateCount");
+            });
 
             builder.Property(b => b.CreatedAt)
                 .IsRequired()

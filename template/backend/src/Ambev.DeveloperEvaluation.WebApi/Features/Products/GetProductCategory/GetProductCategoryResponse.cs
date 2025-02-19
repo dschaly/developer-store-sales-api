@@ -1,16 +1,22 @@
-﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Application.Common;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProductCategory;
 
 /// <summary>
-/// Represents the response returned after successfully creating a new Product.
+/// API response model for GetProductCategory operation
 /// </summary>
-/// <remarks>
-/// This response contains the unique identifier of the newly created user,
-/// which can be used for subsequent operations or reference.
-/// </remarks>
-public sealed class CreateProductResult : BaseResult
+public class GetProductCategoryResponse
+{
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int TotalItems { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public List<ProductResponse>? Data { get; set; }
+}
+
+public class ProductResponse : BaseResult
 {
     /// <summary>
     /// The Product's title

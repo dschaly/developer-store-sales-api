@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Ambev.DeveloperEvaluation.Domain.Validation;
+using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
@@ -18,7 +19,8 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
     public UpdateProductCommandValidator()
     {
         RuleFor(o => o.Id).NotEmpty();
-        RuleFor(o => o.Name).NotEmpty().Length(3, 50);
+        RuleFor(o => o.Title).NotEmpty().Length(3, 50);
         RuleFor(o => o.Price).NotEmpty().GreaterThan(0);
+        RuleFor(product => product.Rating).SetValidator(new RatingValidator());
     }
 }

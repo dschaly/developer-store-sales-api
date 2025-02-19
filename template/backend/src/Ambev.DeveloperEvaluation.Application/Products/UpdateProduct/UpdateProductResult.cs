@@ -1,4 +1,7 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+
+namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
 /// <summary>
 /// Represents the response returned after successfully updating a new product.
@@ -7,11 +10,35 @@
 /// This response contains the unique identifier of the recently updated user,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
-public class UpdateProductResult
+public sealed class UpdateProductResult : BaseResult
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the recently updated product.
+    /// The Product's title
     /// </summary>
-    /// <value>A GUID that uniquely identifies the updated product in the system.</value>
-    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The Product's price
+    /// </summary>
+    public decimal Price { get; set; }
+
+    /// <summary>
+    /// Gets the description of the product.
+    /// </summary>
+    public string Description { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets the category of the product.
+    /// </summary>
+    public string Category { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets the image of the product.
+    /// </summary>
+    public string Image { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets the rating of the product.
+    /// </summary>
+    public Rating? Rating { get; set; }
 }

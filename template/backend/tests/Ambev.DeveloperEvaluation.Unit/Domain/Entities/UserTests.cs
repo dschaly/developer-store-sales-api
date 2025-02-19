@@ -76,7 +76,8 @@ public class UserTests
             Email = UserTestData.GenerateInvalidEmail(), // Invalid: not a valid email
             Phone = UserTestData.GenerateInvalidPhone(), // Invalid: doesn't match pattern
             Status = UserStatus.Unknown, // Invalid: cannot be Unknown
-            Role = UserRole.None // Invalid: cannot be None
+            Role = UserRole.None, // Invalid: cannot be None
+            CreatedBy = "", // Invalid: empty
         };
 
         // Act
