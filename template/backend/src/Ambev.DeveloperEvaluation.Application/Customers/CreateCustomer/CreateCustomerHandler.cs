@@ -21,6 +21,7 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Crea
     /// </summary>
     /// <param name="customerRepository">The customer repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public CreateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper, IUser user)
     {
         _customerRepository = customerRepository;

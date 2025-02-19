@@ -15,6 +15,12 @@ public class UpdateBranchHandler : IRequestHandler<UpdateBranchCommand, UpdateBr
     private readonly IMapper _mapper;
     private readonly IUser _user;
 
+    /// <summary>
+    /// Initializes a new instance of UpdateBranchHandler
+    /// </summary>
+    /// <param name="branchRepository">The branch repository</param>
+    /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public UpdateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IUser user)
     {
         _branchRepository = branchRepository;
