@@ -1,11 +1,9 @@
-﻿using MediatR;
-
-namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 
 /// <summary>
-/// Command for retrieving a list of all product 
+/// Request model for getting a product list
 /// </summary>
-public class GetProductCommand : IRequest<GetProductResult>
+public class GetProductRequest
 {
     /// <summary>
     /// The unique identifier of the Product to retrieve

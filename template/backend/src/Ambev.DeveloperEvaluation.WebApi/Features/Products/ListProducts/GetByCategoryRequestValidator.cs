@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 
 public class GetByCategoryRequestValidator : AbstractValidator<GetByCategoryRequest>
 {

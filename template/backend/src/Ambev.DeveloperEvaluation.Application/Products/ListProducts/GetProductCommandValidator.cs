@@ -3,7 +3,7 @@
 /// <summary>
 /// Validator for GetProductCommand
 /// </summary>
-namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 
 public class GetProductCommandValidator : AbstractValidator<GetProductCommand>
 {

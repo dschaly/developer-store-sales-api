@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 
 /// <summary>
 /// Request model for getting a product list

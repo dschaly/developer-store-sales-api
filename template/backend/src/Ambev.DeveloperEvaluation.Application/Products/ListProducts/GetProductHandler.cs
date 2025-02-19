@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 
 public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductResult>
 {
@@ -31,6 +31,17 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         int size = command.Size ?? 10;
 
         var query = await _productRepository.Query(cancellationToken);
+
+        if (query is null)
+        {
+            return new GetProductResult
+            {
+                Data = [],
+                TotalCount = 0,
+                CurrentPage = page,
+                TotalPages = 0
+            };
+        }
 
         query = ApplyFiltering(query, command);
 

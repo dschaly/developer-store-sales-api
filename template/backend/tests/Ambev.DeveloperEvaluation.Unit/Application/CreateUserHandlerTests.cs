@@ -48,7 +48,8 @@ public class CreateUserHandlerTests
             Email = command.Email,
             Phone = command.Phone,
             Status = command.Status,
-            Role = command.Role
+            Role = command.Role,
+            CreatedBy = "testing",
         };
 
         var result = new CreateUserResult
@@ -107,7 +108,8 @@ public class CreateUserHandlerTests
             Email = command.Email,
             Phone = command.Phone,
             Status = command.Status,
-            Role = command.Role
+            Role = command.Role,
+            CreatedBy = "testing",
         };
 
         _mapper.Map<User>(command).Returns(user);
@@ -141,7 +143,8 @@ public class CreateUserHandlerTests
             Email = command.Email,
             Phone = command.Phone,
             Status = command.Status,
-            Role = command.Role
+            Role = command.Role,
+            CreatedBy = "testing",
         };
 
         _mapper.Map<User>(command).Returns(user);

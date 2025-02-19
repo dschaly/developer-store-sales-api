@@ -19,21 +19,21 @@ public static class QueryingUtil<T> where T : BaseEntity
 
             if (firstOrder)
             {
-                orderedQuery = descending ? orderedQuery.OrderByDescending(GetPropertyExpression<T>(property))
-                                          : orderedQuery.OrderBy(GetPropertyExpression<T>(property));
+                orderedQuery = descending ? orderedQuery.OrderByDescending(GetPropertyExpression(property))
+                                          : orderedQuery.OrderBy(GetPropertyExpression(property));
                 firstOrder = false;
             }
             else
             {
-                orderedQuery = descending ? ((IOrderedQueryable<T>)orderedQuery).ThenByDescending(GetPropertyExpression<T>(property))
-                                          : ((IOrderedQueryable<T>)orderedQuery).ThenBy(GetPropertyExpression<T>(property));
+                orderedQuery = descending ? ((IOrderedQueryable<T>)orderedQuery).ThenByDescending(GetPropertyExpression(property))
+                                          : ((IOrderedQueryable<T>)orderedQuery).ThenBy(GetPropertyExpression(property));
             }
         }
 
         return orderedQuery;
     }
 
-    private static Expression<Func<T, object>> GetPropertyExpression<T>(string propertyName)
+    private static Expression<Func<T, object>> GetPropertyExpression(string propertyName)
     {
         var param = Expression.Parameter(typeof(T), "x");
         var property = Expression.Property(param, propertyName);

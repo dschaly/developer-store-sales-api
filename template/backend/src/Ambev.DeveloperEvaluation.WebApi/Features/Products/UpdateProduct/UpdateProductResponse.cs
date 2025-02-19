@@ -36,5 +36,5 @@ public class UpdateProductResponse : BaseResponse
     /// <summary>
     /// Gets the rating of the product.
     /// </summary>
-    public Rating Rating { get; set; }
+    public Rating Rating { get; set; } = new Rating(0, 0);
 }
