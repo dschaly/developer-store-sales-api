@@ -2,27 +2,30 @@
 using Ambev.DeveloperEvaluation.Domain.Validation;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
 
 /// <summary>
-/// Validator for CreateUserRequest that defines validation rules for user creation.
+/// Validator for CreateUserRequest that defines validation rules for user updating.
 /// </summary>
-public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
+public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
 {
     /// <summary>
-    /// Initializes a new instance of the CreateUserRequestValidator with defined validation rules.
+    /// Initializes a new instance of the UpdateUserRequestValidator with defined validation rules.
     /// </summary>
     /// <remarks>
     /// Validation rules include:
-    /// - Email: Must be valid format (using EmailValidator)
-    /// - Username: Required, length between 3 and 50 characters
-    /// - Password: Must meet security requirements (using PasswordValidator)
-    /// - Phone: Must match international format (+X XXXXXXXXXX)
-    /// - Status: Cannot be Unknown
-    /// - Role: Cannot be None
+    /// - Title: Must not be empty and length between 3 and 50 characters
+    /// - Price: Must not be empty and must be greater than zero
+    /// - Category: Must not be empty and length between 3 and 50 characters
+    /// - Description: Must not be empty and must be null or empty and have a maximum length of 500
+    /// - Image: Must not be empty and must be null or empty and have a maximum length of 250
+    /// - Rating: Must not be valid (using RatingValidator)
     /// </remarks>
-    public CreateUserRequestValidator()
+    public UpdateUserRequestValidator()
     {
+        RuleFor(o => o.Id)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.");
         RuleFor(user => user.Email)
             .SetValidator(new EmailValidator());
         RuleFor(user => user.Username)

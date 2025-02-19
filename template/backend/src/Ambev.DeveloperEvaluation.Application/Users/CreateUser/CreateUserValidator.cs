@@ -23,11 +23,23 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     /// </remarks>
     public CreateUserCommandValidator()
     {
-        RuleFor(user => user.Email).SetValidator(new EmailValidator());
-        RuleFor(user => user.Username).NotEmpty().Length(3, 50);
-        RuleFor(user => user.Password).SetValidator(new PasswordValidator());
-        RuleFor(user => user.Phone).Matches(@"^\+?[1-9]\d{1,14}$");
-        RuleFor(user => user.Status).NotEqual(UserStatus.Unknown);
-        RuleFor(user => user.Role).NotEqual(UserRole.None);
+        RuleFor(user => user.Email)
+            .SetValidator(new EmailValidator());
+        RuleFor(user => user.Username)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.")
+            .Length(3, 50)
+            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
+        RuleFor(user => user.Password)
+            .SetValidator(new PasswordValidator());
+        RuleFor(user => user.Phone)
+            .Matches(@"^\+?[1-9]\d{1,14}$")
+            .WithMessage("The phone format is invalid.");
+        RuleFor(user => user.Status)
+            .NotEqual(UserStatus.Unknown)
+            .WithMessage("The {PropertName} is invalid.");
+        RuleFor(user => user.Role)
+            .NotEqual(UserRole.None)
+            .WithMessage("The {PropertName} is invalid.");
     }
 }

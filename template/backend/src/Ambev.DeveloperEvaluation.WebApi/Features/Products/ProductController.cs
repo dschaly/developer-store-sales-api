@@ -104,7 +104,7 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponseWithData<ListProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProduct(
+    public async Task<IActionResult> ListProduct(
         [FromQuery] ListProductRequest request,
         CancellationToken cancellationToken)
     {
