@@ -17,7 +17,15 @@ public class CreateBranchRequestValidator : AbstractValidator<CreateBranchReques
     /// </remarks>
     public CreateBranchRequestValidator()
     {
-        RuleFor(user => user.Name).NotEmpty().Length(3, 50);
-        RuleFor(user => user.Address).NotEmpty().Length(3, 100);
+        RuleFor(user => user.Name)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.")
+            .Length(3, 50)
+            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
+        RuleFor(user => user.Address)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.")
+            .Length(3, 100)
+            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
     }
 }

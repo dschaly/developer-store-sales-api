@@ -10,10 +10,14 @@ public class DeleteBranchRequestValidator : AbstractValidator<DeleteBranchReques
     /// <summary>
     /// Initializes validation rules for DeleteBranchRequest
     /// </summary>
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public DeleteBranchRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Branch ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }
