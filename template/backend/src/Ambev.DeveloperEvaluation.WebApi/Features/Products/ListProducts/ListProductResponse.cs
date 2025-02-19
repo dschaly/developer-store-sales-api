@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 /// <summary>
 /// API response model for GetProduct operation
 /// </summary>
-public class GetProductResponse
+public class ListProductResponse
 {
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }

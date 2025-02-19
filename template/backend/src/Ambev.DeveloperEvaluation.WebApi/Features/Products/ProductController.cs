@@ -101,20 +101,20 @@ public class ProductsController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The paginated product list if found</returns>
     [HttpGet()]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<ListProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct(
-        [FromQuery] GetProductRequest request,
+        [FromQuery] ListProductRequest request,
         CancellationToken cancellationToken)
     {
-        var validator = new GetProductRequestValidator();
+        var validator = new ListProductRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var command = _mapper.Map<GetProductCommand>(request);
+        var command = _mapper.Map<ListProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
         return Ok(new PaginatedResponse<ProductResponse>
@@ -189,20 +189,20 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProductCategories([FromRoute] GetByCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductCategories([FromRoute] ListByCategoryRequest request, CancellationToken cancellationToken)
     {
-        var validator = new GetByCategoryRequestValidator();
+        var validator = new ListByCategoryRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var commandRequest = new GetProductRequest
+        var commandRequest = new ListProductRequest
         {
             Category = request.Category,
         };
 
-        var command = _mapper.Map<GetProductCommand>(commandRequest);
+        var command = _mapper.Map<ListProductCommand>(commandRequest);
         var response = await _mediator.Send(command, cancellationToken);
 
         return Ok(new PaginatedResponse<ProductResponse>

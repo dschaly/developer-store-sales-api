@@ -6,14 +6,14 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 /// <summary>
 /// Profile for mapping GetProduct feature requests to commands
 /// </summary>
-public class GetProductProfile : Profile
+public class ListProductProfile : Profile
 {
     /// <summary>
     /// Initializes the mappings for GetProduct feature
     /// </summary>
-    public GetProductProfile()
+    public ListProductProfile()
     {
-        CreateMap<GetProductRequest, GetProductCommand>();
+        CreateMap<ListProductRequest, ListProductCommand>();
         CreateMap<ProductResult, ProductResponse>();
     }
 }
