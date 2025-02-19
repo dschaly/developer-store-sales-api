@@ -15,6 +15,12 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
     private readonly IMapper _mapper;
     private readonly IUser _user;
 
+    /// <summary>
+    /// Initializes a new instance of UpdateCustomerHandler
+    /// </summary>
+    /// <param name="customerRepository">The customer repository</param>
+    /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public UpdateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper, IUser user)
     {
         _customerRepository = customerRepository;

@@ -13,11 +13,6 @@ public class CreateUserResponse
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The user's full name
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
     /// The user's email address
     /// </summary>
     public string Email { get; set; } = string.Empty;

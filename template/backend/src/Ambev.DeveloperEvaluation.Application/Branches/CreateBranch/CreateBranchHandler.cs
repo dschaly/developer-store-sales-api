@@ -21,6 +21,7 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
     /// </summary>
     /// <param name="branchRepository">The branch repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IUser user)
     {
         _branchRepository = branchRepository;
