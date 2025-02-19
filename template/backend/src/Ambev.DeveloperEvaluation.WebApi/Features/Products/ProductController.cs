@@ -10,6 +10,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
@@ -18,7 +19,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 /// Controller for managing product operations
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
+
 public class ProductsController : BaseController
 {
     private readonly IMediator _mediator;
@@ -101,18 +104,15 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct(
-        [FromQuery] int? _page,
-        [FromQuery] int? _size,
-        [FromQuery] string? _order,
-
+        [FromQuery] GetProductRequest request,
         CancellationToken cancellationToken)
     {
-        var request = new GetProductRequest
-        {
-            Page = _page,
-            Size = _size,
-            Order = _order
-        };
+        //var request = new GetProductRequest
+        //{
+        //    Page = _page,
+        //    Size = _size,
+        //    Order = _order
+        //};
 
         var validator = new GetProductRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);

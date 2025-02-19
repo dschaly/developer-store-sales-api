@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.Application.Common;
 
-public static class OrderingUtil<T> where T : BaseEntity
+public static class QueryingUtil<T> where T : BaseEntity
 {
     public static IQueryable<T> ApplyOrdering(IQueryable<T> query, string order)
     {

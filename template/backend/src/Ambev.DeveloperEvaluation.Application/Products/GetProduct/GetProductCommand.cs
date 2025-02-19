@@ -21,4 +21,14 @@ public class GetProductCommand : IRequest<GetProductResult>
     /// The unique identifier of the Product to retrieve
     /// </summary>
     public string? Order { get; set; }
+
+    /// <summary>
+    /// The Product's title Filter
+    /// </summary>
+    public string? Title { get; set; }
+
+    /// <summary>
+    /// The Product's category Filter
+    /// </summary>
+    public string? Category { get; set; }
 }

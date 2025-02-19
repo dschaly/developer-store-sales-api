@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Ambev.DeveloperEvaluation.Domain.Validation;
+using FluentValidation;
 
 /// <summary>
 /// Validator for CreateProductCommand that defines validation rules for product creation command.
@@ -12,12 +13,14 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     /// </summary>
     /// <remarks>
     /// Validation rules include:
-    /// - Name: Must not be null or empty, length between 3 and 50 characters
+    /// - Title: Must not be null or empty, length between 3 and 50 characters
     /// - Email: Must be in valid format (using EmailValidator)
+    /// - Rating: Must be in valid format (using EmailValidator)
     /// </remarks>
     public CreateProductCommandValidator()
     {
-        RuleFor(o => o.Name).NotEmpty().Length(3, 50);
-        RuleFor(o => o.Price).NotEmpty().GreaterThan(0);
+        RuleFor(product => product.Title).NotEmpty().Length(3, 50);
+        RuleFor(product => product.Price).NotEmpty().GreaterThan(0);
+        RuleFor(product => product.Rating).SetValidator(new RatingValidator());
     }
 }

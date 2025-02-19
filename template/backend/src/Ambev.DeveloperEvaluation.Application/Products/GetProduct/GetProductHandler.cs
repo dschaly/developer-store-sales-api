@@ -32,9 +32,11 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
 
         var query = await _productRepository.Query(cancellationToken);
 
+        query = ApplyFiltering(query, command);
+
         if (!string.IsNullOrWhiteSpace(command.Order))
         {
-            query = OrderingUtil<Product>.ApplyOrdering(query, command.Order);
+            query = QueryingUtil<Product>.ApplyOrdering(query, command.Order);
         }
 
         int totalCount = await query.CountAsync(cancellationToken);
@@ -50,5 +52,16 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         };
 
         return result;
+    }
+
+    public static IQueryable<Product> ApplyFiltering(IQueryable<Product> query, GetProductCommand command)
+    {
+        if (!string.IsNullOrWhiteSpace(command.Title))
+            query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Title"), $"%{command.Title}%"));
+
+        if (!string.IsNullOrWhiteSpace(command.Title))
+            query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Title"), $"%{command.Title}%"));
+
+        return query;
     }
 }

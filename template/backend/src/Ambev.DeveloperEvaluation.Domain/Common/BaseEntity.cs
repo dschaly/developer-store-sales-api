@@ -17,7 +17,7 @@ public class BaseEntity : IComparable<BaseEntity>
     /// <summary>
     /// Gets or sets the identifier of the user who created the entity.
     /// </summary>
-    public string CreatedBy { get; set; } = string.Empty;
+    public required string CreatedBy { get; set; }
 
     /// <summary>
     /// Gets or sets the date and time when the entity was last updated.

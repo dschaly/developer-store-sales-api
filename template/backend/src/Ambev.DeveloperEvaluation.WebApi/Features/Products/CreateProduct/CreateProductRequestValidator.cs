@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Ambev.DeveloperEvaluation.Domain.Validation;
+using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 
@@ -12,12 +13,14 @@ public class CreateProductRequestValidator : AbstractValidator<CreateProductRequ
     /// </summary>
     /// <remarks>
     /// Validation rules include:
-    /// - Name: Required, length between 3 and 50 characters
+    /// - Title: Required, length between 3 and 50 characters
     /// - Email: Must be valid format (using EmailValidator)
+    /// - Rating: Must be in valid format (using EmailValidator)
     /// </remarks>
     public CreateProductRequestValidator()
     {
-        RuleFor(user => user.Name).NotEmpty().Length(3, 50);
+        RuleFor(user => user.Title).NotEmpty().Length(3, 50);
         RuleFor(user => user.Price).NotEmpty().GreaterThan(0);
+        RuleFor(product => product.Rating).SetValidator(new RatingValidator());
     }
 }
