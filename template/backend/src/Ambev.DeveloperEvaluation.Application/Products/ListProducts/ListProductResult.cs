@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 /// <summary>
 /// Response model for GetProduct operation
 /// </summary>
-public class GetProductResult
+public class ListProductResult
 {
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }

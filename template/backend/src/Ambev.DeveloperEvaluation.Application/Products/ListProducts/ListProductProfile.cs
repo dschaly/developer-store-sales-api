@@ -6,9 +6,9 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 /// <summary>
 /// Profile for mapping between Product entity and GetProductResult
 /// </summary>
-public class GetProductProfile : Profile
+public class ListProductProfile : Profile
 {
-    public GetProductProfile()
+    public ListProductProfile()
     {
         CreateMap<Product, ProductResult>();
     }

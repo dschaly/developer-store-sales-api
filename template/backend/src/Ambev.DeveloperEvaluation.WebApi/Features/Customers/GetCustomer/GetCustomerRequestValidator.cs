@@ -10,10 +10,13 @@ public class GetCustomerRequestValidator : AbstractValidator<GetCustomerRequest>
     /// <summary>
     /// Initializes validation rules for GetCustomerRequest
     /// </summary>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public GetCustomerRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Customer ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

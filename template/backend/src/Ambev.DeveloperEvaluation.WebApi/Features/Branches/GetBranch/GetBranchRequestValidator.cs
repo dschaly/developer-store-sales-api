@@ -10,10 +10,14 @@ public class GetBranchRequestValidator : AbstractValidator<GetBranchRequest>
     /// <summary>
     /// Initializes validation rules for GetBranchRequest
     /// </summary>
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public GetBranchRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Branch ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

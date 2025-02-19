@@ -10,10 +10,13 @@ public class GetUserRequestValidator : AbstractValidator<GetUserRequest>
     /// <summary>
     /// Initializes validation rules for GetUserRequest
     /// </summary>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public GetUserRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("User ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

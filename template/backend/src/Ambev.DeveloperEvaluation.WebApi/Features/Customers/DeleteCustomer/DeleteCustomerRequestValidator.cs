@@ -10,10 +10,14 @@ public class DeleteCustomerRequestValidator : AbstractValidator<DeleteCustomerRe
     /// <summary>
     /// Initializes validation rules for DeleteCustomerRequest
     /// </summary>
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks
     public DeleteCustomerRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Customer ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

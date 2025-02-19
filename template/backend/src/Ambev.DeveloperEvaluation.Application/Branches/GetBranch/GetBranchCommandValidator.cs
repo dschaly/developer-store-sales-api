@@ -5,15 +5,19 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 /// <summary>
 /// Validator for GetBranchCommand
 /// </summary>
-public class GetBranchValidator : AbstractValidator<GetBranchCommand>
+public class GetBranchCommandValidator : AbstractValidator<GetBranchCommand>
 {
     /// <summary>
     /// Initializes validation rules for GetBranchCommand
     /// </summary>
-    public GetBranchValidator()
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
+    public GetBranchCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Branch ID is required");
+            .WithMessage("The {PropertyName} is required.");
     }
 }

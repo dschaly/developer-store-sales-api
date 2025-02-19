@@ -8,20 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 
-public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductResult>
+public class ListProductHandler : IRequestHandler<ListProductCommand, ListProductResult>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public GetProductHandler(IProductRepository productRepository, IMapper mapper)
+    public ListProductHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
         _mapper = mapper;
     }
 
-    public async Task<GetProductResult> Handle(GetProductCommand command, CancellationToken cancellationToken)
+    public async Task<ListProductResult> Handle(ListProductCommand command, CancellationToken cancellationToken)
     {
-        var validator = new GetProductCommandValidator();
+        var validator = new ListProductCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
@@ -34,7 +34,7 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
 
         if (query is null)
         {
-            return new GetProductResult
+            return new ListProductResult
             {
                 Data = [],
                 TotalCount = 0,
@@ -54,7 +54,7 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
 
         var products = query.Skip((page - 1) * size).Take(size);
 
-        var result = new GetProductResult
+        var result = new ListProductResult
         {
             Data = _mapper.Map<IEnumerable<ProductResult>>(products),
             TotalCount = totalCount,
@@ -65,7 +65,7 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         return result;
     }
 
-    public static IQueryable<Product> ApplyFiltering(IQueryable<Product> query, GetProductCommand command)
+    public static IQueryable<Product> ApplyFiltering(IQueryable<Product> query, ListProductCommand command)
     {
         if (!string.IsNullOrWhiteSpace(command.Title))
             query = query.Where(p => EF.Functions.Like(EF.Property<string>(p, "Title"), $"%{command.Title}%"));
