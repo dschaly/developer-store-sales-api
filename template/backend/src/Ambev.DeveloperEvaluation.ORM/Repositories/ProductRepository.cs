@@ -25,6 +25,11 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
                 .FirstOrDefaultAsync(b => b.Title == name, cancellationToken);
         }
 
+        /// <summary>
+        /// Retrieves a list of products
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The product list if found, null otherwise</returns>
         public async Task<IQueryable<Product>?> Query(CancellationToken cancellationToken = default)
         {
             return await Task.FromResult(_context.Products.AsNoTracking());

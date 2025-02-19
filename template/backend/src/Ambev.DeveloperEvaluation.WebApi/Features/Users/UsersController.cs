@@ -1,10 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +59,37 @@ public class UsersController : BaseController
             Success = true,
             Message = "User created successfully",
             Data = _mapper.Map<CreateUserResponse>(response)
+        });
+    }
+    /// <summary>
+    /// Retrieves a pagniated user list
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="request">List users Request</param>
+    /// <returns>The user list if found</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ListUser([FromQuery] ListUserRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new ListUserRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<ListUserCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new PaginatedResponse<UserResponse>
+        {
+            Success = true,
+            Message = "Users retrieved successfully",
+            CurrentPage = response.CurrentPage,
+            TotalCount = response.TotalCount,
+            TotalPages = response.TotalPages,
+            Data = _mapper.Map<IEnumerable<UserResponse>>(response.Data)
         });
     }
 

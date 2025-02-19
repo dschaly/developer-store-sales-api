@@ -72,4 +72,14 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    /// <summary>
+    /// Retrieves a list of users
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The user list if found, null otherwise</returns>
+    public async Task<IQueryable<User>?> Query(CancellationToken cancellationToken = default)
+    {
+        return await Task.FromResult(_context.Users.AsNoTracking());
+    }
 }
