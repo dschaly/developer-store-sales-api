@@ -10,6 +10,10 @@ public class GetUserValidator : AbstractValidator<GetUserCommand>
     /// <summary>
     /// Initializes validation rules for GetUserCommand
     /// </summary>
+    /// <remarks>
+    /// Validation rules include:
+    /// - Id: Must not be empty
+    /// </remarks>
     public GetUserValidator()
     {
         RuleFor(x => x.Id)
