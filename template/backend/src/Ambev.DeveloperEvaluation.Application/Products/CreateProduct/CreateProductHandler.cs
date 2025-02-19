@@ -21,6 +21,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
     /// </summary>
     /// <param name="productRepository">The product repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public CreateProductHandler(IProductRepository productRepository, IMapper mapper, IUser user)
     {
         _productRepository = productRepository;

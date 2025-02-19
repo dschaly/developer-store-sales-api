@@ -14,6 +14,13 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
     private readonly IUser _user;
+
+    /// <summary>
+    /// Initializes a new instance of UpdateProductHandler
+    /// </summary>
+    /// <param name="productRepository">The product repository</param>
+    /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="user">The Authenticated User</param>
     public UpdateProductHandler(IProductRepository productRepository, IMapper mapper, IUser user)
     {
         _productRepository = productRepository;
