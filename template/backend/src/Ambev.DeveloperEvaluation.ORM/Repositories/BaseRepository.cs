@@ -53,9 +53,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     /// <param name="id">The unique identifier of the entity</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The entity if found, null otherwise</returns>
-    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        return await _context.Set<T>()
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
     /// <summary>

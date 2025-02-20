@@ -8,5 +8,10 @@ public class ListByCategoryRequest
     /// <summary>
     /// The Product's category
     /// </summary>
-    public required string Category { get; set; }
+    public string Category { get; }
+
+    public ListByCategoryRequest(string category)
+    {
+        Category = category;
+    }
 }

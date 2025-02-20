@@ -13,25 +13,19 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// This is a unique identifier for the sale transaction.
         /// Must not be null or empty and must be greater than zero.
         /// </summary>
-        public string SaleNumber { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the date and time when the sale was made.
-        /// Must not be null or empty and must be greater than min date.
-        /// </summary>
-        public DateTime SaleDate { get; set; }
+        public string SaleNumber { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the total amount of the sale after applying any discounts.
         /// Must not be null and must be greater than zero.
         /// </summary>
-        public decimal TotalAmount { get; set; }
+        public decimal TotalAmount { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the sale has been cancelled.
         /// Must not be null.
         /// </summary>
-        public bool IsCancelled { get; set; }
+        public bool IsCancelled { get; private set; } = false;
 
         /// <summary>
         /// Gets or sets the foreign key for the associated customer.
@@ -52,11 +46,39 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// <summary>
         /// Gets or sets the branch where the sale took place.
         /// </summary>
-        public required Branch Branch { get; set; }
+        public virtual required Branch Branch { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of sale items associated with the sale.
         /// </summary>
         public virtual List<SaleItem> SaleItems { get; set; } = [];
+
+        /// <summary>
+        /// Generates and sets a new sale number.
+        /// </summary>
+        public void GenerateSaleNumber()
+        {
+            SaleNumber = Guid.NewGuid().ToString();
+        }
+
+        /// <summary>
+        /// Generates and sets a new sale number.
+        /// </summary>
+        public void CalculateTotalAmout()
+        {
+            TotalAmount = Math.Round(SaleItems.Sum(item => item.TotalAmount), 2);
+        }
+
+        /// <summary>
+        /// Cancels the sale.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void CancelSale()
+        {
+            if (IsCancelled)
+                throw new InvalidOperationException("Sale has already been cancelled.");
+
+            IsCancelled = true;
+        }
     }
 }
