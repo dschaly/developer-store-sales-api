@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
-using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
+﻿using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProductCategory;
 using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
@@ -56,7 +56,7 @@ public class ProductsController : BaseController
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var command = _mapper.Map<CreateProductCommand>(request);
+        var command = _mapper.Map<CreateSaleCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
         return Created(string.Empty, new ApiResponseWithData<CreateProductResponse>
@@ -182,15 +182,17 @@ public class ProductsController : BaseController
     /// <summary>
     /// Retrieves all product registered with the given categories
     /// </summary>
-    /// <param name="request">Category Request</param>
+    /// <param name="category">Category Request</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The products list</returns>
     [HttpGet("categories/{category}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProductCategories([FromRoute] ListByCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductCategories([FromRoute] string category, CancellationToken cancellationToken)
     {
+        var request = new ListByCategoryRequest(category);
+
         var validator = new ListByCategoryRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
@@ -199,7 +201,7 @@ public class ProductsController : BaseController
 
         var commandRequest = new ListProductRequest
         {
-            Category = request.Category,
+            Category = category,
         };
 
         var command = _mapper.Map<ListProductCommand>(commandRequest);

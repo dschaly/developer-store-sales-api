@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 public interface IUserRepository : IBaseRepository<User>
 {
     /// <summary>
-    /// Retrieves a list if users
+    /// Retrieves a list of users
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The users list if found, null otherwise</returns>
