@@ -41,6 +41,8 @@ public class ProductValidator : AbstractValidator<Product>
             .WithMessage("Product image URL cannot be longer than 255 characters.");
 
         RuleFor(product => product.CreatedBy)
+            .NotEmpty()
+            .WithMessage("CreatedBy cannot be empty.")
             .MaximumLength(100)
             .WithMessage("CreatedBy cannot be longer than 100 characters.");
 
