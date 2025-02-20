@@ -44,6 +44,6 @@ public class GetSaleHandler : IRequestHandler<GetSaleCommand, GetSaleResult>
         var result = _mapper.Map<GetSaleResult>(sale);
 
         return result;
-      
+
     }
 }
