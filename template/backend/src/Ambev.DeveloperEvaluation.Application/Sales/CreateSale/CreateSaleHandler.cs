@@ -1,11 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Common;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateEventHandler;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Rebus.Bus;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
@@ -18,6 +19,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     private readonly IPricingService _pricingService;
     private readonly IMapper _mapper;
     private readonly IUser _user;
+    private readonly IBus _bus;
+
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -26,16 +29,18 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="user">The Authenticated User</param>
     public CreateSaleHandler(
-        ISaleRepository saleRepository, 
-        IMapper mapper, 
-        IUser user, 
+        ISaleRepository saleRepository,
+        IMapper mapper,
+        IUser user,
         IPricingService pricingService
-    )
+,
+        IBus bus)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
         _user = user;
         _pricingService = pricingService;
+        _bus = bus;
     }
 
     /// <summary>
@@ -66,8 +71,9 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         sale.CalculateTotalAmout();
 
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
-        var result = _mapper.Map<CreateSaleResult>(createdSale);
 
-        return result;
+        await _bus.Publish(new SaleCreatedEvent(createdSale.SaleNumber, createdSale.TotalAmount, createdSale.CreatedAt));
+
+        return _mapper.Map<CreateSaleResult>(createdSale);
     }
 }

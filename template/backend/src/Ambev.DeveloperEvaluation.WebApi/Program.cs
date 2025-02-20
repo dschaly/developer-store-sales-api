@@ -1,4 +1,7 @@
 using Ambev.DeveloperEvaluation.Application;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelEventHandler;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateEventHandler;
+using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale.UpdateEventHandler;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
@@ -10,16 +13,20 @@ using Ambev.DeveloperEvaluation.WebApi.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Rebus.Bus;
+using Rebus.Config;
+using Rebus.Transport.InMem;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         try
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Log.Information("Starting web application");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -38,6 +45,13 @@ public static class Program
                     b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
                 )
             );
+
+            builder.Services.AddRebus(config => config
+                .Logging(l => l.ColoredConsole())
+                .Transport(t => t.UseInMemoryTransport(new InMemNetwork(), "sales-queue"))
+            );
+
+            builder.Services.AutoRegisterHandlersFromAssemblyOf<SaleCreatedEventHandler>();
 
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
@@ -58,6 +72,12 @@ public static class Program
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             var app = builder.Build();
+
+            var bus = app.Services.GetRequiredService<IBus>();
+            await bus.Subscribe<SaleCreatedEvent>();
+            await bus.Subscribe<SaleUpdatedEvent>();
+            await bus.Subscribe<SaleCanceledEvent>();
+
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
@@ -77,7 +97,7 @@ public static class Program
 
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
         catch (Exception ex)
         {
@@ -85,7 +105,7 @@ public static class Program
         }
         finally
         {
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
         }
     }
 

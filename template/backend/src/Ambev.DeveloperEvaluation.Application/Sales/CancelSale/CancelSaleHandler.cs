@@ -1,7 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelEventHandler;
+using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
+using Rebus.Bus;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 
@@ -12,15 +14,17 @@ public class CancelSaleHandler : IRequestHandler<CancelSaleCommand, CancelSaleRe
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IUser _user;
+    private readonly IBus _bus;
 
     /// <summary>
     /// Initializes a new instance of CancelSaleHandler
     /// </summary>
     /// <param name="saleRepository">The sale repository</param>
-    public CancelSaleHandler(ISaleRepository saleRepository, IUser user)
+    public CancelSaleHandler(ISaleRepository saleRepository, IUser user, IBus bus)
     {
         _saleRepository = saleRepository;
         _user = user;
+        _bus = bus;
     }
 
     /// <summary>
@@ -45,6 +49,8 @@ public class CancelSaleHandler : IRequestHandler<CancelSaleCommand, CancelSaleRe
         sale.UpdatedBy = _user.Username;
 
         await _saleRepository.UpdateAsync(sale, cancellationToken);
+
+        await _bus.Publish(new SaleCanceledEvent(sale.SaleNumber, sale.TotalAmount, DateTime.UtcNow));
 
         return new CancelSaleResponse { Success = true };
     }
