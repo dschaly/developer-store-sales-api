@@ -20,9 +20,9 @@ public class DeleteSaleHandler : IRequestHandler<DeleteSaleCommand, DeleteSaleRe
     }
 
     /// <summary>
-    /// Handles the BaseDeleteCommand request
+    /// Handles the DeleteSaleCommand request
     /// </summary>
-    /// <param name="request">The BaseDeleteCommand command</param>
+    /// <param name="request">The DeleteSaleCommand command</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The result of the delete operation</returns>
     public async Task<DeleteSaleResponse> Handle(DeleteSaleCommand request, CancellationToken cancellationToken)

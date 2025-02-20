@@ -15,5 +15,6 @@ public class ListSaleProfile : Profile
     {
         CreateMap<ListSaleRequest, ListSaleCommand>();
         CreateMap<SaleResult, SaleResponse>();
+        CreateMap<ListSaleItemResult, ListSaleItemResponse>();
     }
 }
