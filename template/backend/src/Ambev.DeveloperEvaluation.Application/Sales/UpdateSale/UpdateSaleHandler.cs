@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Common;
+using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -12,6 +13,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleResult>
 {
     private readonly ISaleRepository _saleRepository;
+    private readonly IPricingService _pricingService;
     private readonly IMapper _mapper;
     private readonly IUser _user;
 
@@ -21,11 +23,12 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <param name="saleRepository">The sale repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="user">The Authenticated User</param>
-    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IUser user)
+    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IUser user, IPricingService pricingService)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
         _user = user;
+        _pricingService = pricingService;
     }
 
     /// <summary>
@@ -42,16 +45,26 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var entity = await _saleRepository.GetByIdAsync(command.Id, cancellationToken)
-            ?? throw new InvalidOperationException($"Entity with id {command.Id} not found");
+        var sale = await _saleRepository.GetByIdAsync(command.Id, cancellationToken)
+            ?? throw new InvalidOperationException($"Sale with id {command.Id} not found");
 
-        _mapper.Map(command, entity);
+        _mapper.Map(command, sale);
 
-        entity.UpdatedBy = _user.Username;
-        entity.UpdatedAt = DateTime.UtcNow;
+        foreach (var item in sale.SaleItems)
+        {
+            item.SaleId = sale.Id;
+            item.CreatedBy ??= _user.Username;
+            item.UpdatedBy = _user.Username;
+            item.UpdatedAt = DateTime.UtcNow;
+            await _pricingService.ProcessSaleItemPricing(item, cancellationToken);
+        }
 
-        var updatedSale = await _saleRepository.UpdateAsync(entity, cancellationToken);
+        sale.CalculateTotalAmout();
 
+        sale.UpdatedBy = _user.Username;
+        sale.UpdatedAt = DateTime.UtcNow;
+
+        var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);
         var result = _mapper.Map<UpdateSaleResult>(updatedSale);
 
         return result;

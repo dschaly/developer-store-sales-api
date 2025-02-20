@@ -19,5 +19,5 @@ public class CreateSaleRequest
     /// <summary>
     /// Gets or sets the collection of sale items associated with the sale.
     /// </summary>
-    public virtual List<CreateSaleItemRequest> SaleItems { get; set; } = [];
+    public List<CreateSaleItemRequest> SaleItems { get; set; } = [];
 }

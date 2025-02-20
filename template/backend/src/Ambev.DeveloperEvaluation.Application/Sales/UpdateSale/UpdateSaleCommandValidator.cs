@@ -12,45 +12,25 @@ public class UpdateSaleCommandValidator : AbstractValidator<UpdateSaleCommand>
     /// Initializes a new instance of the UpdateSaleCommandValidator with defined validation rules.
     /// </summary>
     /// <remarks>
-    /// Validation rules include:
-    /// - Id: Must not be empty
-    /// - Title: Must not be empty and length between 3 and 50 characters
-    /// - Price: Must not be empty and must be greater than zero
-    /// - Category: Must not be empty and length between 3 and 50 characters
-    /// - Description: Must not be empty and must be null or empty and have a maximum length of 500
-    /// - Image: Must not be empty and must be null or empty and have a maximum length of 250
-    /// - Rating: Must not be valid (using RatingValidator)
+    /// Validation rules:
+    /// - SaleDate: Required, must be greater than the minimum date value.
+    /// - CustomerId: Required, must not be empty.
+    /// - BranchId: Required, must not be empty.
+    /// - SaleItems: Required, must contain at least one item, and each item must meet SaleItemValidatior rules.
     /// </remarks>
     public UpdateSaleCommandValidator()
     {
-        RuleFor(o => o.Id)
+        RuleFor(o => o.CustomerId)
             .NotEmpty()
-            .WithMessage("The {PropertyName} is required.");
-        RuleFor(o => o.Title)
+            .WithMessage("The {PropertyName} is required");
+        RuleFor(o => o.BranchId)
             .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .Length(3, 50)
-            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
-        RuleFor(o => o.Price)
+            .WithMessage("The {PropertyName} is required");
+        RuleFor(o => o.SaleItems)
             .NotEmpty()
             .WithMessage("The {PropertyName} is required")
-            .GreaterThan(0)
-            .WithMessage("The {PropertyName} must be greater than zero.");
-        RuleFor(o => o.Category)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .Length(3, 50)
-            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
-        RuleFor(o => o.Description)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .MaximumLength(500)
-            .WithMessage("The {PropertyName} must not exceed {MaxLength} characters.");
-        RuleFor(o => o.Image)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .MaximumLength(255)
-            .WithMessage("The {PropertyName} must not exceed {MaxLength} characters.");
-        RuleFor(sale => sale.Rating).SetValidator(new RatingValidator());
+            .Must(o => o.Count > 0)
+            .WithMessage("The {PropertyName} must have at least one item")
+            .ForEach(item => item.SetValidator(new SaleItemValidator()));
     }
 }

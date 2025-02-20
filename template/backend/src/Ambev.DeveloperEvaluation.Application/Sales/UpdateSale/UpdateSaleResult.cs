@@ -1,5 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Common;
-using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
@@ -13,32 +12,33 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 public sealed class UpdateSaleResult : BaseResult
 {
     /// <summary>
-    /// The Sale's title
+    /// Gets the sale number.
+    /// This is a unique identifier for the sale transaction.
     /// </summary>
-    public string Title { get; set; } = string.Empty;
+    public string SaleNumber { get; private set; } = string.Empty;
 
     /// <summary>
-    /// The Sale's price
+    /// Gets or sets the total amount of the sale after applying any discounts.
     /// </summary>
-    public decimal Price { get; set; }
+    public decimal TotalAmount { get; set; }
 
     /// <summary>
-    /// Gets the description of the Sale.
+    /// Gets a value indicating whether the sale has been cancelled.
     /// </summary>
-    public string Description { get; set; } = string.Empty;
+    public bool IsCancelled { get; set; }
 
     /// <summary>
-    /// Gets the category of the Sale.
+    /// Gets or sets the foreign key for the associated customer.
     /// </summary>
-    public string Category { get; set; } = string.Empty;
+    public Guid CustomerId { get; set; }
 
     /// <summary>
-    /// Gets the image of the Sale.
+    /// Gets or sets the foreign key for the branch where the sale was made.
     /// </summary>
-    public string Image { get; set; } = string.Empty;
+    public Guid BranchId { get; set; }
 
     /// <summary>
-    /// Gets the rating of the Sale.
+    /// Gets or sets the collection of sale items associated with the sale.
     /// </summary>
-    public Rating? Rating { get; set; }
+    public List<UpdateSaleItemResult> SaleItems { get; set; } = [];
 }

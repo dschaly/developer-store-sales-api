@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using FluentValidation;
 using MediatR;
 
@@ -10,8 +10,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 /// Command for updating a sale.
 /// </summary>
 /// <remarks>
-/// This command is used to capture the required data for creating a sale, 
-/// including name and address. 
+/// This command is used to capture the required data for updating a sale, 
+/// including customerId and branchId and address. 
 /// It implements <see cref="IRequest{TResponse}"/> to initiate the request 
 /// that returns a <see cref="CreateSaleResult"/>.
 /// 
@@ -23,39 +23,26 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 public class UpdateSaleCommand : IRequest<UpdateSaleResult>
 {
     /// <summary>
-    /// The unique identifier of the sale
+    /// The unique identifier of the entity
+    /// Must not be null or empty.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The Sale's title
+    /// Gets or sets the foreign key for the associated customer.
+    /// Must not be null or empty.
     /// </summary>
-    public string Title { get; set; } = string.Empty;
+    public Guid CustomerId { get; set; }
 
     /// <summary>
-    /// Gets or sets the e-mail address of the sale.
+    /// Gets or sets the foreign key for the branch where the sale was made.
     /// </summary>
-    public decimal Price { get; set; }
+    public Guid BranchId { get; set; }
 
     /// <summary>
-    /// Gets the description of the sale.
+    /// Gets or sets the collection of sale items associated with the sale.
     /// </summary>
-    public string Description { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets the category of the sale.
-    /// </summary>
-    public string Category { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets the image of the sale.
-    /// </summary>
-    public string Image { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets the rating of the sale.
-    /// </summary>
-    public Rating Rating { get; set; } = new Rating(0, 0);
+    public virtual List<SaleItem> SaleItems { get; set; } = [];
 
     public ValidationResultDetail Validate()
     {

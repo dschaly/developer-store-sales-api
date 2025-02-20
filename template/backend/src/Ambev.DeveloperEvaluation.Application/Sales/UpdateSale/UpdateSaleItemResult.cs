@@ -1,9 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.WebApi.Common;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
-public class CreateSaleItemResponse : BaseResponse
+public class UpdateSaleItemResult : BaseResult
 {
     // <summary>
     /// Gets the foreign key for the associated product.

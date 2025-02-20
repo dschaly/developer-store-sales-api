@@ -1,14 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
-public class CreateSaleItemResult
+public class CreateSaleItemResult : BaseResult
 {
-    /// <summary>
-    /// Gets the unique identifier.
-    /// </summary>
-    public Guid Id { get; set; }
-
     // <summary>
     /// Gets the foreign key for the associated product.
     /// </summary>
@@ -34,11 +30,6 @@ public class CreateSaleItemResult
     /// Gets the foreign key for the associated sale.
     /// </summary>
     public Guid SaleId { get; set; }
-
-    /// <summary>
-    /// Gets the sale that this sale item belongs to.
-    /// </summary>
-    public virtual required CreateSaleResult Sale { get; set; }
 
     /// <summary>
     /// Gets the product that is sold in this sale item.

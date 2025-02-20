@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Common;
+using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
@@ -14,8 +15,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
 {
     private readonly ISaleRepository _saleRepository;
-    private readonly IProductRepository _productRepository;
-    private readonly IDiscountService _discountService;
+    private readonly IPricingService _pricingService;
     private readonly IMapper _mapper;
     private readonly IUser _user;
 
@@ -25,13 +25,17 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     /// <param name="saleRepository">The sale repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="user">The Authenticated User</param>
-    public CreateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IUser user, IDiscountService discountService, IProductRepository productRepository)
+    public CreateSaleHandler(
+        ISaleRepository saleRepository, 
+        IMapper mapper, 
+        IUser user, 
+        IPricingService pricingService
+    )
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
         _user = user;
-        _discountService = discountService;
-        _productRepository = productRepository;
+        _pricingService = pricingService;
     }
 
     /// <summary>
@@ -55,13 +59,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
 
         foreach (var item in sale.SaleItems)
         {
-            var product = await _productRepository.GetByIdAsync(item.ProductId, cancellationToken)
-                ?? throw new KeyNotFoundException($"Product with ID {item.ProductId} not found");
-
             item.CreatedBy = _user.Username;
-            var itemDiscount = _discountService.CalculateDiscount(item.Quantity, product.Price);
-            item.ApplyDiscount(itemDiscount, product.Price);
-            item.CalculateTotalAmount(product.Price);
+            await _pricingService.ProcessSaleItemPricing(item, cancellationToken);
         }
 
         sale.CalculateTotalAmout();

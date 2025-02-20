@@ -1,10 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Validation;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 
 /// <summary>
-/// Validator for CreateSaleRequest that defines validation rules for branch updating.
+/// Validator for UpdateSaleRequest that defines validation rules for branch updating.
 /// </summary>
 public class UpdateSaleRequestValidator : AbstractValidator<UpdateSaleRequest>
 {
@@ -25,31 +24,30 @@ public class UpdateSaleRequestValidator : AbstractValidator<UpdateSaleRequest>
         RuleFor(o => o.Id)
             .NotEmpty()
             .WithMessage("The {PropertyName} is required.");
-        RuleFor(o => o.Title)
+        RuleFor(o => o.CustomerId)
             .NotEmpty()
-            .WithMessage("The {PropertyName} is required.")
-            .Length(3, 50)
-            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
-        RuleFor(o => o.Price)
+            .WithMessage("The {PropertyName} is required");
+        RuleFor(o => o.BranchId)
             .NotEmpty()
-            .WithMessage("The {PropertyName} is required.")
+            .WithMessage("The {PropertyName} is required");
+        RuleFor(o => o.SaleItems)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required")
+            .Must(o => o.Count > 0)
+            .WithMessage("The {PropertyName} must have at least one item")
+            .ForEach(item => item.SetValidator(new UpdateSaleItemRequestValidator()));
+    }
+}
+
+public class UpdateSaleItemRequestValidator : AbstractValidator<UpdateSaleItemRequest>
+{
+    public UpdateSaleItemRequestValidator()
+    {
+        RuleFor(x => x.ProductId)
+            .NotEmpty()
+            .WithMessage("The {PropertyName} is required.");
+        RuleFor(x => x.Quantity)
             .GreaterThan(0)
-            .WithMessage("The {PropertyName} must be greater than zero.");
-        RuleFor(o => o.Category)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .Length(3, 50)
-            .WithMessage("The {PropertyName} must be between {MinLength} and {MaxLength} characters long.");
-        RuleFor(o => o.Description)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .MaximumLength(500)
-            .WithMessage("The {PropertyName} must not exceed {MaxLength} characters.");
-        RuleFor(o => o.Image)
-            .NotEmpty()
-            .WithMessage("The {PropertyName} is required")
-            .MaximumLength(255)
-            .WithMessage("The {PropertyName} must not exceed {MaxLength} characters.");
-        RuleFor(sale => sale.Rating).SetValidator(new RatingValidator());
+            .WithMessage("The {PropertyName} must be greater than 0.");
     }
 }
