@@ -1,9 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Common;
+using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale.UpdateEventHandler;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Rebus.Bus;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
@@ -16,6 +18,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     private readonly IPricingService _pricingService;
     private readonly IMapper _mapper;
     private readonly IUser _user;
+    private readonly IBus _bus;
 
     /// <summary>
     /// Initializes a new instance of UpdateSaleHandler
@@ -23,12 +26,13 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <param name="saleRepository">The sale repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="user">The Authenticated User</param>
-    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IUser user, IPricingService pricingService)
+    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IUser user, IPricingService pricingService, IBus bus)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
         _user = user;
         _pricingService = pricingService;
+        _bus = bus;
     }
 
     /// <summary>
@@ -63,8 +67,10 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
 
         sale.UpdatedBy = _user.Username;
         sale.UpdatedAt = DateTime.UtcNow;
-
         var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);
+
+        await _bus.Publish(new SaleUpdatedEvent(updatedSale.SaleNumber, updatedSale.TotalAmount, updatedSale.CreatedAt));
+
         var result = _mapper.Map<UpdateSaleResult>(updatedSale);
 
         return result;
