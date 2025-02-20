@@ -51,4 +51,51 @@ public class BranchTests
         Assert.False(result.IsValid);
         Assert.NotEmpty(result.Errors);
     }
+
+    /// <summary>
+    /// Tests that validation fails when customer CreatedBy field is too long.
+    /// </summary>
+    [Fact(DisplayName = "Validation should fail when CreatedBy exceeds max length")]
+    public void Given_CreatedByTooLong_When_Validated_Then_ShouldReturnInvalid()
+    {
+        // Arrange
+        var branch = new Branch
+        {
+            Name = "Valid Name",
+            Address = BranchTestData.GenerateValidAddress(),
+            CreatedBy = new string('A', 101), // Invalid: exceeds 100 characters
+        };
+
+        // Act
+        var result = branch.Validate();
+
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.NotEmpty(result.Errors);
+        Assert.Contains(result.Errors, e => e.PropertyName == "CreatedBy");
+    }
+
+    /// <summary>
+    /// Tests that validation fails when customer CreatedAt is in the future.
+    /// </summary>
+    [Fact(DisplayName = "Validation should fail when CreatedAt is in the future")]
+    public void Given_CreatedAtInFuture_When_Validated_Then_ShouldReturnInvalid()
+    {
+        // Arrange
+        var branch = new Branch
+        {
+            Name = "Valid Name",
+            Address = BranchTestData.GenerateValidAddress(),
+            CreatedAt = DateTime.UtcNow.AddDays(1),// Invalid: in the future
+            CreatedBy = "", // Invalid: empty
+        };
+
+        // Act
+        var result = branch.Validate();
+
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.NotEmpty(result.Errors);
+        Assert.Contains(result.Errors, e => e.PropertyName == "CreatedAt");
+    }
 }
