@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelEventHandler;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleEventHandler;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
