@@ -18,7 +18,7 @@ public interface IBaseRepository<T> where T : BaseEntity
     /// <param name="entity">The entity to update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The updated entity</returns>
-    Task<T?> UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a entity by their unique identifier

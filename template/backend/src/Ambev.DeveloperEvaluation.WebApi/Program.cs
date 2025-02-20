@@ -1,5 +1,6 @@
 using Ambev.DeveloperEvaluation.Application;
-using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelEventHandler;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleEventHandler;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem.CancelSaleItemEventHandler;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateEventHandler;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale.UpdateEventHandler;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
@@ -77,6 +78,7 @@ public static class Program
             await bus.Subscribe<SaleCreatedEvent>();
             await bus.Subscribe<SaleUpdatedEvent>();
             await bus.Subscribe<SaleCanceledEvent>();
+            await bus.Subscribe<SaleItemCanceledEvent>();
 
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
