@@ -21,7 +21,7 @@ public class SaleItemEntityValidator : AbstractValidator<SaleItem>
         RuleFor(saleItem => saleItem.Discount)
             .GreaterThanOrEqualTo(0)
             .WithMessage("Discount must be greater than or equal to zero.")
-            .LessThanOrEqualTo((saleItem, _) => saleItem.Product?.Price * saleItem.Quantity)
+            .Must((saleItem, discount) => discount <= saleItem.Product?.Price * saleItem.Quantity)
             .WithMessage("Discount cannot be greater than the total price of the items.");
 
         RuleFor(saleItem => saleItem.TotalAmount)
