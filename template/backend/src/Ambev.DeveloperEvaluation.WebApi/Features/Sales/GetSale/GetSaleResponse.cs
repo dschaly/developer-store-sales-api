@@ -1,21 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.ListSales;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 
 /// <summary>
-/// Response model for GetSale operation
+/// API response model for GetSale operation
 /// </summary>
-public class ListSaleResult
-{
-    public int CurrentPage { get; set; }
-    public int TotalPages { get; set; }
-    public int TotalItems { get; set; }
-    public int PageSize { get; set; }
-    public int TotalCount { get; set; }
-    public IEnumerable<SaleResult>? Data { get; set; }
-}
-
-public class SaleResult : BaseResult
+public class GetSaleResponse : BaseResponse
 {
     /// <summary>
     /// Gets the sale number.
@@ -46,5 +37,5 @@ public class SaleResult : BaseResult
     /// <summary>
     /// Gets or sets the collection of sale items associated with the sale.
     /// </summary>
-    public List<ListSaleItemResult> SaleItems { get; set; } = [];
+    public List<GetSaleItemResult> SaleItems { get; set; } = [];
 }

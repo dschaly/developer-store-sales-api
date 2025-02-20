@@ -36,7 +36,7 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
 
         var success = await _branchRepository.DeleteAsync(request.Id, cancellationToken);
         if (!success)
-            throw new KeyNotFoundException($"User with ID {request.Id} not found");
+            throw new KeyNotFoundException($"Branch with ID {request.Id} not found");
 
         return new DeleteBranchResponse { Success = true };
     }

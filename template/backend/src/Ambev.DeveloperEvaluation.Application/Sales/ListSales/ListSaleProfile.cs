@@ -11,5 +11,6 @@ public class ListSaleProfile : Profile
     public ListSaleProfile()
     {
         CreateMap<Sale, SaleResult>();
+        CreateMap<SaleItem, ListSaleItemResult>();
     }
 }

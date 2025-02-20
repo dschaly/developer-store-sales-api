@@ -35,12 +35,6 @@ public class ListSaleHandler : IRequestHandler<ListSaleCommand, ListSaleResult>
     /// <returns>The paginted sales list</returns>
     public async Task<ListSaleResult> Handle(ListSaleCommand command, CancellationToken cancellationToken)
     {
-        var validator = new ListSaleCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
         int page = command.Page ?? 1;
         int size = command.Size ?? 10;
 
