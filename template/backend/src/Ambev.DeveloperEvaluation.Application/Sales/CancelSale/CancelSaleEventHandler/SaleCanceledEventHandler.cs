@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Rebus.Handlers;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelEventHandler;
+namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleEventHandler;
 
 public class SaleCanceledEventHandler : IHandleMessages<SaleCanceledEvent>
 {

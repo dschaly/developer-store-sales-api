@@ -35,7 +35,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     /// <param name="entity">The entity to update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The updated entity</returns>
-    public async Task<T?> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         var existingEntity = await GetByIdAsync(entity.Id, cancellationToken)
             ?? throw new InvalidOperationException($"Entity with id {entity.Id} not found");
