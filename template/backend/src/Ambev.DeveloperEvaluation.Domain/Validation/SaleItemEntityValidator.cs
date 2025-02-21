@@ -32,14 +32,6 @@ public class SaleItemEntityValidator : AbstractValidator<SaleItem>
             .NotEmpty()
             .WithMessage("Sale ID cannot be empty.");
 
-        RuleFor(saleItem => saleItem.Sale)
-            .NotNull()
-            .WithMessage("Sale must be associated with the sale item.");
-
-        RuleFor(saleItem => saleItem.Product)
-            .NotNull()
-            .WithMessage("Product must be associated with the sale item.");
-
         RuleFor(customer => customer.CreatedBy)
             .NotEmpty()
             .WithMessage("CreatedBy cannot be empty.")

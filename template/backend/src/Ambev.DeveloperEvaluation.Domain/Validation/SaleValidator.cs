@@ -31,6 +31,8 @@ public class SaleValidator : AbstractValidator<Sale>
             .WithMessage("Branch ID cannot be empty.");
 
         RuleFor(sale => sale.SaleItems)
+            .NotEmpty()
+            .WithMessage("The sale should have at least one sale item.")
             .ForEach(item => item.SetValidator(new SaleItemEntityValidator()));
 
         RuleFor(customer => customer.CreatedBy)

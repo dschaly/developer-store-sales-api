@@ -10,7 +10,6 @@ namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData
     /// </summary>
     public static class BranchTestData
     {
-
         /// <summary>
         /// Configures the Faker to generate valid Branch entities.
         /// The generated branch will have valid:

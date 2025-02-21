@@ -88,7 +88,7 @@ public class SaleItem : BaseEntity
     /// </remarks>
     public ValidationResultDetail Validate()
     {
-        var validator = new SaleItemValidator();
+        var validator = new SaleItemEntityValidator();
         var result = validator.Validate(this);
         return new ValidationResultDetail
         {
