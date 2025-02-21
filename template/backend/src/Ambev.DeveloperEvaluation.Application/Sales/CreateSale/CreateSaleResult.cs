@@ -15,7 +15,7 @@ public sealed class CreateSaleResult : BaseResult
     /// Gets the sale number.
     /// This is a unique identifier for the sale transaction.
     /// </summary>
-    public string SaleNumber { get; private set; } = string.Empty;
+    public string SaleNumber { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the total amount of the sale after applying any discounts.

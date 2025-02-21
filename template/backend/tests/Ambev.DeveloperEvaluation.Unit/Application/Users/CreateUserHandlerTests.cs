@@ -2,13 +2,13 @@ using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Domain;
+using Ambev.DeveloperEvaluation.Unit.Application.TestData.Users;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
 
 /// <summary>
 /// Contains unit tests for the <see cref="CreateUserHandler"/> class.
@@ -154,9 +154,12 @@ public class CreateUserHandlerTests
         _passwordHasher.HashPassword(Arg.Any<string>()).Returns("hashedPassword");
 
         // When
+        var validationResponse = command.Validate();
         await _handler.Handle(command, CancellationToken.None);
 
         // Then
+        Assert.True(validationResponse.IsValid);
+        Assert.Empty(validationResponse.Errors);
         _mapper.Received(1).Map<User>(Arg.Is<CreateUserCommand>(c =>
             c.Username == command.Username &&
             c.Email == command.Email &&

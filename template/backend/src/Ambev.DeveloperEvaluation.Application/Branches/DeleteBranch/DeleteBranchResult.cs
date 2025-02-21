@@ -3,7 +3,7 @@
 /// <summary>
 /// Response model for DeleteBranchResponse operation
 /// </summary>
-public class DeleteBranchResponse
+public class DeleteBranchResult
 {
     /// <summary>
     /// Indicates whether the deletion was successful

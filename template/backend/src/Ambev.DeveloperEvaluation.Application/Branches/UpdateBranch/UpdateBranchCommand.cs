@@ -35,6 +35,7 @@ public class UpdateBranchCommand : IRequest<UpdateBranchResult>
     /// Gets or sets the address of the branch.
     /// </summary>
     public string Address { get; set; } = string.Empty;
+
     public ValidationResultDetail Validate()
     {
         var validator = new UpdateBranchCommandValidator();
