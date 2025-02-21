@@ -30,7 +30,7 @@ public class SaleItemTests
             .RuleFor(s => s.CreatedAt, f => f.Date.Past(1)) // Generate a random date within the past year
             .RuleFor(s => s.UpdatedAt, f => f.Date.Recent(1)) // Generate a recent date for UpdatedAt
             .RuleFor(s => s.UpdatedBy, f => f.Internet.UserName().OrNull(f))
-            .Generate(); 
+            .Generate();
 
         // Act
         var result = saleItem.Validate();

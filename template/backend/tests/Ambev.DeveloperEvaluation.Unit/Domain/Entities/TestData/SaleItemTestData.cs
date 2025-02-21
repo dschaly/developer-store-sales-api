@@ -20,7 +20,7 @@ public static class SaleItemTestData
 
     public static Product GenerateValidProduct()
     {
-        return  new Faker<Product>()
+        return new Faker<Product>()
         .RuleFor(p => p.Id, f => f.Random.Guid())
         .RuleFor(p => p.Title, f => f.Commerce.ProductName())
         .RuleFor(p => p.Price, f => decimal.Parse(f.Commerce.Price(min: 1.00m, max: 1000.00m))) // Price between 1 and 1000

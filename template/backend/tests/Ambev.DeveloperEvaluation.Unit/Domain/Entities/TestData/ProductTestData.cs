@@ -34,7 +34,7 @@ public static class ProductTestData
         .RuleFor(p => p.Rating, f => new Rating(f.Random.Int(1, 5), f.Random.Int(0, 100))) // Random rating between 1 and 5, with a random number of reviews
         .RuleFor(p => p.CreatedBy, f => f.Internet.UserName())
         .RuleFor(p => p.CreatedAt, f => f.Date.Past(1))
-        .RuleFor(p => p.UpdatedAt, f => f.Date.Between(f.Date.Past(1), DateTime.Now).OrNull(f))
+        .RuleFor(p => p.UpdatedAt, f => f.Date.Past(1).OrNull(f))
         .RuleFor(p => p.UpdatedBy, f => f.Internet.UserName().OrNull(f));
 
     /// <summary>

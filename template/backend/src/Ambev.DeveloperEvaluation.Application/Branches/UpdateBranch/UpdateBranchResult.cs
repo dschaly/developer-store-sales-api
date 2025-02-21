@@ -1,4 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+
+namespace Ambev.DeveloperEvaluation.Application.Branches.UpdateBranch;
 
 /// <summary>
 /// Represents the response returned after successfully updating a new branch.
@@ -7,11 +9,15 @@
 /// This response contains the unique identifier of the recently updated user,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
-public class UpdateBranchResult
+public class UpdateBranchResult : BaseResult
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the recently updated branch.
+    /// Gets the name of the branch.
     /// </summary>
-    /// <value>A GUID that uniquely identifies the updated branch in the system.</value>
-    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets the address of the branch.
+    /// </summary>
+    public string Address { get; set; } = string.Empty;
 }

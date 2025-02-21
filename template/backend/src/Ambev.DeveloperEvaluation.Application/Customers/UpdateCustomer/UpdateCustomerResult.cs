@@ -1,4 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Customers.UpdateCustomer;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+
+namespace Ambev.DeveloperEvaluation.Application.Customers.UpdateCustomer;
 
 /// <summary>
 /// Represents the response returned after successfully updating a new customer.
@@ -7,11 +9,15 @@
 /// This response contains the unique identifier of the recently updated user,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
-public class UpdateCustomerResult
+public class UpdateCustomerResult : BaseResult
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the recently updated customer.
+    /// Gets the name of the customer.
     /// </summary>
-    /// <value>A GUID that uniquely identifies the updated customer in the system.</value>
-    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets the email address of the customer.
+    /// </summary>
+    public string Email { get; set; } = string.Empty;
 }
