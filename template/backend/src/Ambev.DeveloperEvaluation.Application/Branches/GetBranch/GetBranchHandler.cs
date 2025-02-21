@@ -38,10 +38,10 @@ public class GetBranchHandler : IRequestHandler<GetBranchCommand, GetBranchResul
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var user = await _branchRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (user == null)
-            throw new KeyNotFoundException($"Branch with ID {request.Id} not found");
+        var branch = await _branchRepository.GetByIdAsync(request.Id, cancellationToken);
 
-        return _mapper.Map<GetBranchResult>(user);
+        return branch is null
+            ? throw new KeyNotFoundException($"Branch with ID {request.Id} not found")
+            : _mapper.Map<GetBranchResult>(branch);
     }
 }

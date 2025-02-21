@@ -1,14 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.ListSales;
 
-public class ListSaleItemResult
+public class ListSaleItemResult : BaseResult
 {
-    /// <summary>
-    /// Gets the unique identifier.
-    /// </summary>
-    public Guid Id { get; set; }
-
     // <summary>
     /// Gets the foreign key for the associated product.
     /// </summary>

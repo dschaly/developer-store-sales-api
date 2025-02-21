@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 /// <summary>
 /// Handler for processing DeleteBranchCommand requests
 /// </summary>
-public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBranchResponse>
+public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBranchResult>
 {
     private readonly IBranchRepository _branchRepository;
 
@@ -26,7 +26,7 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
     /// <param name="request">The DeleteUser command</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The result of the delete operation</returns>
-    public async Task<DeleteBranchResponse> Handle(DeleteBranchCommand request, CancellationToken cancellationToken)
+    public async Task<DeleteBranchResult> Handle(DeleteBranchCommand request, CancellationToken cancellationToken)
     {
         var validator = new DeleteBranchCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -38,6 +38,6 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
         if (!success)
             throw new KeyNotFoundException($"Branch with ID {request.Id} not found");
 
-        return new DeleteBranchResponse { Success = true };
+        return new DeleteBranchResult { Success = true };
     }
 }

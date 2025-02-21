@@ -5,7 +5,7 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 /// <summary>
 /// Command for deleting a branch
 /// </summary>
-public class DeleteBranchCommand : IRequest<DeleteBranchResponse>
+public class DeleteBranchCommand : IRequest<DeleteBranchResult>
 {
     /// <summary>
     /// The unique identifier of the branch to delete
